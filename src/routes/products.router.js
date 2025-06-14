@@ -1,5 +1,6 @@
 import { Router } from "express";
 const router = Router()
+import fs from 'fs';
 
 const products = [
     {
@@ -69,21 +70,46 @@ const products = [
     }
 ];
 
+const rutaArchivo = './data/products.json'
+
+//Verificacion inicial para leer los archivos
+if (fs.existsSync(rutaArchivo)) {
+    try {
+        const data = fs.readFileSync(rutaArchivo, 'utf-8');
+        products = JSON.parse(data);
+    } catch (error) {
+        console.error("Error al leer el archivo de productos:", error);
+        products = [];
+    }
+}
 
 //GET: Todos los productos
 router.get("/", (req,res) => {
-    res.send({status: "Success", payload: products})
+    try {
+        const data = fs.readFileSync(rutaArchivo, 'utf-8');
+        const products = JSON.parse(data);
+        res.send({ status: "Success", payload: products });
+    } catch (error) {
+        res.status(500).send({ status: "Error", message: "Algo salió mal al leer el archivo." });
+    }
 })
 
 //GET: Por su ID
 router.get("/:productId", (req,res) => {
     let { productId } = req.params;
     productId = parseInt(productId);
-    let productIndex = products.findIndex(p => p.id === productId) 
-    if(productIndex === -1) {
-        return res.status(404).send({ status: "Error", message: "Producto no encontrado" });
+
+    try {
+        const data = fs.readFileSync(rutaArchivo,"utf-8");
+        const productos = JSON.parse(data)
+        const producto = productos.find(p => p.id === productId)
+        if (!producto) {
+            return res.status(404).send({ status: "Error", message: "Producto no encontrado" });
+        }
+        res.send({ status: "Success", payload: producto });
+    } catch (error) {
+        res.status(500).send({ status: "Error", message: "No se pudo leer el archivo" });
     }
-    res.send({status: "Success", payload: products[productIndex]})
 })
 
 //POST
@@ -97,7 +123,12 @@ router.post("/", (req,res) => {
 
     products.push(prod)
 
-    res.send({status: "Success", payload: `Agregado el film con el id: ${prod.id}`})
+    try {
+        fs.writeFileSync(rutaArchivo, JSON.stringify(products, null, 2), 'utf-8');
+        res.send({ status: "Success", payload: `Agregado el film con el id: ${prod.id}` });
+    } catch (error) {
+        res.status(500).send({ status: "Error", message: "No se pudo guardar el archivo." });
+    }
 })
 
 //PUT
@@ -113,7 +144,12 @@ router.put("/:productId", (req,res) => {
     prodUpdate.id = products[productPosition].id
     products[productPosition] = prodUpdate;
 
-    res.send({ status: "Success", payload: prodUpdate });
+    try {
+        fs.writeFileSync(rutaArchivo, JSON.stringify(products, null, 2));
+        res.send({ status: "Success", message: `Producto con el id ${productId} actualizado exitosamente.` });
+    } catch (error) {
+        res.status(500).send({ status: "Error", message: "No se pudo guardar el archivo actualizado.", payload: prodUpdate});
+    }
 })
 
 //DELETE
@@ -122,6 +158,9 @@ router.delete("/:productId", (req,res) => {
     let { productId } = req.params;
     productId = parseInt(productId);
 
+    const data = fs.readFileSync(rutaArchivo, 'utf-8');
+    let products = JSON.parse(data);
+
     let productPosition = products.findIndex(p => p.id === productId)
 
     if(productPosition < 0) {
@@ -129,8 +168,16 @@ router.delete("/:productId", (req,res) => {
     }
     products.splice(productPosition, 1)
 
-    res.send({status: "Success", message: `Producto con el id ${productId} eliminado exitosamente.`})
-
+    try {
+        if (fs.existsSync(rutaArchivo)) {
+            fs.writeFileSync(rutaArchivo, JSON.stringify(products, null, 2));
+            res.send({ status: "Success", message: `Producto con el id ${productId} eliminado exitosamente.` });
+        } else {
+        res.status(404).send({ status: "Error", message: "El archivo no existe." });
+        }
+    } catch (error) {
+        res.status(500).send({ status: "Error", message: "No se pudo guardar el archivo actualizado." });
+    }
 })
 
 export default router;

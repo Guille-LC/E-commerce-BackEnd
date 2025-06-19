@@ -5,7 +5,7 @@ const rutaArchivo = './newFile.txt'
 
 //POST
 router.post("/", (req,res) => {
-    let cartId = Math.floor(Math.random() * 100)
+    let cartId = Math.floor(Math.random() * 100 + 1)
     let products = [];
 
     let carrito = {
@@ -13,7 +13,7 @@ router.post("/", (req,res) => {
         productsArray: products
     }
 
-    res,send(carrito)
+    res.send(carrito)
 })
 
 export default router;

@@ -16,7 +16,7 @@ app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
 
 //Rutas
-app.use("/", productsRouter)
-app.use("/", cartsRouter)
+app.use("/api", productsRouter)
+app.use("/api", cartsRouter)
 
 app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));

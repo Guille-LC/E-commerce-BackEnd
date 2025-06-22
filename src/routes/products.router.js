@@ -3,6 +3,7 @@ const router = Router()
 import fs from 'fs';
 
 /* let products = [
+
     {
         id: 1,
         title: "Casablanca",
@@ -70,12 +71,15 @@ import fs from 'fs';
     }
 ];
  */
+
+//Variables constantes
 const rutaArchivo = './data/products.json'
+const codeFormat = 'utf-8'
 
 //Funcion para leer los archivos
 function leerArchivos() {
     try {
-        const data = fs.readFileSync(rutaArchivo,"utf-8");
+        const data = fs.readFileSync(rutaArchivo,codeFormat);
         return JSON.parse(data);
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);
@@ -86,7 +90,7 @@ function leerArchivos() {
 //Funcion para guardar los archivos
 function guardarArchivos(products) {
     try {
-        fs.writeFileSync(rutaArchivo, JSON.stringify(products, null, 2), 'utf-8');
+        fs.writeFileSync(rutaArchivo, JSON.stringify(products, null, 2), codeFormat);
         return true
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);

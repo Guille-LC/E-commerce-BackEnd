@@ -1,6 +1,8 @@
 import { Router } from "express";
 const router = Router()
 import fs from 'fs';
+import __dirname from "../utils.js";
+console.log(__dirname);
 
 /* let products = [
 
@@ -73,13 +75,15 @@ import fs from 'fs';
  */
 
 //Variables constantes
-const rutaArchivo = './data/products.json'
+const rutaArchivo = `${__dirname}/data/products.json`
 const codeFormat = 'utf-8'
 
 //Funcion para leer los archivos
 function leerArchivos() {
     try {
         const data = fs.readFileSync(rutaArchivo,codeFormat);
+        console.log(data);
+        
         return JSON.parse(data);
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);
@@ -121,7 +125,7 @@ router.get("/:productId", (req,res) => {
         return res.status(404).send({ status: "Error", message: "Producto no encontrado" });
     }
 
-    res.send({ status: "Success", payload: producto });
+    res.send({ status: "Success", payload: productId });
 })
 
 //POST

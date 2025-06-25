@@ -116,20 +116,20 @@ router.get("/", (req,res) => {
 //GET: Por su ID
 router.get("/:productId", (req,res) => {
     let { productId } = req.params;
-
+    productId = parseInt(productId);
     const products = leerArchivos();
 
-    productId = parseInt(productId);
+    const productPorId = products.find(p => p.id === productId)
 
     if(!products) {
-        return res.status(404).send({ status: "Error", message: "Producto no encontrado" });
+        return res.status(404).send({ status: "Error", message: `Producto con el id: ${productId} no encontrado.` });
     }
 
-    res.send({ status: "Success", payload: productId });
+    res.send({ status: "Success", payload: productPorId});
 })
 
 //POST
-router.post("/", (req,res) => {
+router.post("/create", (req,res) => {
     let prod = req.body;
 
     if(!prod.title || !prod.description || !prod.code || !prod.price || !prod.status || !prod.stock || !prod.category) {

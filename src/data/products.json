@@ -52,16 +52,14 @@
     ]
   },
   {
-    "id": 5,
     "title": "Se7en",
     "description": "Se7en es un oscuro thriller policial donde dos detectives persiguen a un asesino en serie que comete crímenes basados en los siete pecados capitales.",
     "code": "",
-    "price": 3500,
+    "price": 4000,
     "status": true,
-    "stock": 4,
+    "stock": 5,
     "category": "Thriller",
-    "thumbnails": [
-      "https://image.tmdb.org/t/p/original/aVNqeE2JjiW7VMSmkxPdN0Xd5xo.jpg"
-    ]
+    "thumbnails": [],
+    "id": 5
   }
 ]

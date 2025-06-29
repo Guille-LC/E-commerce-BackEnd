@@ -1,7 +1,7 @@
 //http://localhost:8080
 
 import express from 'express'
-import cartsRouter from './routes/carts.products.js'
+import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js'

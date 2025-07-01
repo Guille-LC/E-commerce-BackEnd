@@ -3,16 +3,14 @@
 import express from 'express'
 import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
+import addToCart from './routes/add.router.js'
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
 import fs from 'fs'
-
-//Variables constantes
-const rutaArchivo = `${__dirname}/data/products.json`
-const codeFormat = 'utf-8'
+import { Server } from 'socket.io'
 
 const app = express();
-const PORT = 9090;
+const PORT = 8080;
 
 //Configuracion de Express
 app.use(express.json());
@@ -25,18 +23,32 @@ app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
 
 function leerProductos() {
-  const data = fs.readFileSync(rutaArchivo, codeFormat);
+  const data = fs.readFileSync(`${__dirname}/data/products.json`, 'utf-8');
   return JSON.parse(data) ;
 }
 
 //Ruta de Handlebars para ver los productos
-app.get('/home',(req,res) => {
+app.get('/realTimeProducts',(req,res) => {
     const products = leerProductos();
-    res.render("home", {products})
+    res.render("realTimeProducts", {products})
+})
+
+app.get('/socket', (req,res) => {
+  res.render("socket")
 })
 
 //Rutas de producto y carrito
 app.use("/api", productsRouter)
 app.use("/api/carts", cartsRouter)
 
-app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
+app.use("/api", addToCart)
+
+const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
+
+//Socket
+const socketServer = new Server(httpServer);
+
+socketServer.on('connection', socket => {
+  socket.on('mensaje',data => console.log("Data: ", data))
+  socket.emit("msj2", "Soy el backend")
+})

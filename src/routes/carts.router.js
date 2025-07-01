@@ -60,12 +60,9 @@ router.post("/createCart", (req,res) => {
 })
 
 //GET todos
-router.get("/carts", (req,res) => {
+router.get("/all", (req,res) => {
     const carts = leerCarrito();
-
-    console.log(carts);
-
-    res.json(carts);
+    res.send({ status: "Success", payload: carts })
 })
 
 //GET por id

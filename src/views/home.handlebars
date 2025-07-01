@@ -4,17 +4,17 @@
         <ul>
             {{#each products}}
                 <li>
-                    <h3>{{title}}</h3>
-                    <p>{{description}}</p>
-                    <p>{{code}}</p>
-                    <p>{{price}}</p>
-                    <p>{{status}}</p>
-                    <p>{{stock}}</p>
-                    <p>{{category}}</p>
-                    <img>{{thumbnails}}</img>
+                    <h3>Titulo: {{this.title}}</h3>
+                    <p>Descripcion: {{this.description}}</p>
+                    <p>Codigo: {{this.code}}</p>
+                    <p>Precio: ${{this.price}}</p>
+                    <p>Estado: {{this.status}}</p>
+                    <p>Stock: {{this.stock}}</p>
+                    <p>Categoria: {{this.category}}</p>
+                    <img src={{this.thumbnails}}></img>
                 </li>
-                <span>================================================</span>
             {{/each}}
+            <span>================================================</span>
         </ul>
         {{else}}
             <p>No hay productos disponibles.</p>

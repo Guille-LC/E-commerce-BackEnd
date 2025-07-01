@@ -12,7 +12,7 @@ const rutaArchivo = `${__dirname}/data/products.json`
 const codeFormat = 'utf-8'
 
 const app = express();
-const PORT = 8080;
+const PORT = 9090;
 
 //Configuracion de Express
 app.use(express.json());
@@ -26,23 +26,17 @@ app.set('view engine', 'handlebars');
 
 function leerProductos() {
   const data = fs.readFileSync(rutaArchivo, codeFormat);
-  return data;
+  return JSON.parse(data) ;
 }
 
 //Ruta de Handlebars para ver los productos
 app.get('/home',(req,res) => {
     const products = leerProductos();
-    res.render("home",products)
-})
-
-app.get('/index', (req,res) => {
-  res.render("index", {
-    style: "index.css"
-  })
+    res.render("home", {products})
 })
 
 //Rutas de producto y carrito
 app.use("/api", productsRouter)
-app.use("/api", cartsRouter)
+app.use("/api/carts", cartsRouter)
 
 app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));

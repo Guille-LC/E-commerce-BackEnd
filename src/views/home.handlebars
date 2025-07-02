@@ -1,0 +1,17 @@
+{{!-- http://localhost:8080/home --}}
+
+<section>
+    <h1>Carritos</h1>
+    {{#if carritos.length}}
+        <ul class="flexCart">
+            {{#each carritos}}
+            <div class="cartItem">
+                <li>Id: {{this.id}}</li>
+                <li>Productos: {{this.productsArray}}</li>
+            </div>
+            {{/each}}
+        </ul>
+        {{else}}
+            <p>No hay carritos disponibles</p>
+    {{/if}}
+</section>

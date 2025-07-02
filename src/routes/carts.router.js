@@ -7,9 +7,6 @@ import __dirname from "../utils.js";
 const rutaArchivo = `${__dirname}/data/carts.json`
 const codeFormat = 'utf-8'
 
-console.log(rutaArchivo);
-
-
 function leerCarrito() {
     try {
         const cartData = fs.readFileSync(rutaArchivo,codeFormat);

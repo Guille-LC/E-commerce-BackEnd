@@ -27,10 +27,29 @@ function leerProductos() {
   return JSON.parse(data) ;
 }
 
-//Ruta de Handlebars para ver los productos
+function leerCarrito() {
+    try {
+        const cartData = fs.readFileSync(`${__dirname}/data/carts.json`,'utf-8');
+        return JSON.parse(cartData)
+    } catch (error) {
+        console.error("❌ Error al leer archivo:", error.message);
+        return [];
+    }
+}
+
+//Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts',(req,res) => {
     const products = leerProductos();
-    res.render("realTimeProducts", {products})
+    res.render("realTimeProducts", {
+      style: 'main.css',
+      products})
+})
+
+app.get('/home',(req,res) => {
+  const carritos = leerCarrito();
+  res.render("home", {
+    style: "main.css",
+    carritos})
 })
 
 app.get('/socket', (req,res) => {

@@ -9,7 +9,12 @@
   },
   {
     "id": 6,
-    "productsArray": []
+    "productsArray": [
+      {
+        "productId": 1,
+        "quantity": 1
+      }
+    ]
   },
   {
     "id": 46,
@@ -25,6 +30,10 @@
   },
   {
     "id": 23,
+    "productsArray": []
+  },
+  {
+    "id": 83,
     "productsArray": []
   }
 ]

@@ -52,17 +52,10 @@ app.get('/home',(req,res) => {
     carritos})
 })
 
-app.get('/socket', (req,res) => {
-  res.render("socket")
-})
-
 //Rutas de producto y carrito
 app.use("/api", productsRouter)
 app.use("/api/carts", cartsRouter)
-
 app.use("/api", addToCart)
-
-const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
 
 //Socket
 const socketServer = new Server(httpServer);
@@ -70,4 +63,7 @@ const socketServer = new Server(httpServer);
 socketServer.on('connection', socket => {
   socket.on('mensaje',data => console.log("Data: ", data))
   socket.emit("msj2", "Soy el backend")
+  socket.emit("msj3", "Soy el backend")
 })
+
+const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));

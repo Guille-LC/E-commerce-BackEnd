@@ -40,6 +40,7 @@ h1 {
     border-color: rgb(0, 100, 100);
     border-style: outset;
     border-width: 5px;
+    border-radius: 15px;
     width: 400px;
     list-style-type: none;
 }

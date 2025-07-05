@@ -37,6 +37,28 @@ function leerCarrito() {
     }
 }
 
+function guardarArchivos(products) {
+    try {
+        fs.writeFileSync(`${__dirname}/data/products.json`, JSON.stringify(products, null, 2), 'utf-8');
+        return true
+    } catch (error) {
+        console.error("❌ Error al leer archivo:", error.message);
+        return false
+    }
+}
+
+function generarIdUnico(productos) {
+  let id;
+  let existe;
+
+  do {
+    id = Math.floor(Math.random() * 100) + 1;
+    existe = productos.some(p => p.id === id);
+  } while (existe);
+
+  return id;
+}
+
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts',(req,res) => {
     const products = leerProductos();
@@ -57,13 +79,28 @@ app.use("/api", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api", addToCart)
 
+const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
+
 //Socket
 const socketServer = new Server(httpServer);
 
 socketServer.on('connection', socket => {
+  socket.on('nuevoProducto', data => {
+    try {
+      let productos = leerProductos();
+      const nuevoProducto = {
+        id: generarIdUnico(productos),
+        ...data
+      }
+      productos.push(nuevoProducto);
+      let productosActualizados = guardarArchivos(`${__dirname}/data/products.json`, productos);
+      socketServer.emit('actualizarProductos', productosActualizados);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  })
+
   socket.on('mensaje',data => console.log("Data: ", data))
   socket.emit("msj2", "Soy el backend")
   socket.emit("msj3", "Soy el backend")
 })
-
-const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));

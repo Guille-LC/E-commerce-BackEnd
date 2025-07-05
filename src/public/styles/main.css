@@ -7,6 +7,14 @@ h1 {
     font-size: 3rem;
 }
 
+#formCrearProducto {
+    border-color: rgb(160, 0, 0);
+    border-style: outset;
+    border-width: 5px;
+    width: 200px;
+    height: 300px;
+}
+
 .flex {
     display: flex;
     flex-direction: row;

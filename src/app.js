@@ -5,9 +5,8 @@ import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
 import handlebars from 'express-handlebars'
-import __dirname from './utils.js'
-import fs from 'fs'
 import { Server } from 'socket.io'
+import { __dirname, leerProductos, leerCarrito, guardarArchivos, generarIdUnico } from './utils.js'
 
 const app = express();
 const PORT = 8080;
@@ -22,53 +21,16 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
 
-function leerProductos() {
-  const data = fs.readFileSync(`${__dirname}/data/products.json`, 'utf-8');
-  return JSON.parse(data) ;
-}
-
-function leerCarrito() {
-    try {
-        const cartData = fs.readFileSync(`${__dirname}/data/carts.json`,'utf-8');
-        return JSON.parse(cartData)
-    } catch (error) {
-        console.error("❌ Error al leer archivo:", error.message);
-        return [];
-    }
-}
-
-function guardarArchivos(products) {
-    try {
-        fs.writeFileSync(`${__dirname}/data/products.json`, JSON.stringify(products, null, 2), 'utf-8');
-        return true
-    } catch (error) {
-        console.error("❌ Error al leer archivo:", error.message);
-        return false
-    }
-}
-
-function generarIdUnico(productos) {
-  let id;
-  let existe;
-
-  do {
-    id = Math.floor(Math.random() * 100) + 1;
-    existe = productos.some(p => p.id === id);
-  } while (existe);
-
-  return id;
-}
-
 //Ruta de Handlebars para ver los productos y los carritos
-app.get('/realTimeProducts',(req,res) => {
-    const products = leerProductos();
+app.get('/realTimeProducts', async (req,res) => {
+    const products = await leerProductos();
     res.render("realTimeProducts", {
       style: 'main.css',
       products})
 })
 
-app.get('/home',(req,res) => {
-  const carritos = leerCarrito();
+app.get('/home', async (req,res) => {
+  const carritos = await leerCarrito();
   res.render("home", {
     style: "main.css",
     carritos})
@@ -85,16 +47,16 @@ const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`))
 const socketServer = new Server(httpServer);
 
 socketServer.on('connection', socket => {
-  socket.on('nuevoProducto', data => {
+  socket.on('nuevoProducto', async data => {
     try {
-      let productos = leerProductos();
+      let productos = await leerProductos();
       const nuevoProducto = {
         id: generarIdUnico(productos),
         ...data
       }
       productos.push(nuevoProducto);
-      let productosActualizados = guardarArchivos(productos);
-      socketServer.emit('actualizarProductos', productosActualizados);
+      await guardarArchivos(productos);
+      socketServer.emit('actualizarProductos', productos);
     } catch (error) {
       console.log("Error: ", error);
     }

@@ -1,34 +1,9 @@
 import { Router } from "express";
 const router = Router()
-import fs from 'fs';
-import __dirname from "../utils.js";
-
-//Variables constantes
-const rutaArchivo = `${__dirname}/data/carts.json`
-const codeFormat = 'utf-8'
-
-function leerCarrito() {
-    try {
-        const cartData = fs.readFileSync(rutaArchivo,codeFormat);
-        return JSON.parse(cartData)
-    } catch (error) {
-        console.error("❌ Error al leer archivo:", error.message);
-        return [];
-    }
-}
-
-function guardarCarrito(data) {
-    try {
-        fs.writeFileSync(rutaArchivo,JSON.stringify(data, null, 2),codeFormat);
-        return true;
-    } catch (error) {
-        console.error("❌ Error al guardar archivo:", error.message);
-        return false;
-    }
-}
+import { __dirname, leerCarrito, guardarCarrito} from '../utils.js'
 
 //POST
-router.post("/createCart", (req,res) => {
+router.post("/createCart", async (req,res) => {
     let cartId = Math.floor(Math.random() * 100 + 1)
     let products = [];
 
@@ -37,11 +12,11 @@ router.post("/createCart", (req,res) => {
         productsArray: products
     }
 
-    let carts = leerCarrito();
+    let carts = await leerCarrito();
 
     carts.push(carrito)
     
-    let exito = guardarCarrito(carts)
+    let exito = await guardarCarrito(carts)
 
     if (exito) {
         res.send({
@@ -57,17 +32,17 @@ router.post("/createCart", (req,res) => {
 })
 
 //GET todos
-router.get("/all", (req,res) => {
-    const carts = leerCarrito();
+router.get("/all", async (req,res) => {
+    const carts = await leerCarrito();
     res.send({ status: "Success", payload: carts })
 })
 
 //GET por id
-router.get("/getcart/:cartId", (req,res) => {
+router.get("/getcart/:cartId", async (req,res) => {
     let { cartId } = req.params;
     cartId = parseInt(cartId);
 
-    const cartData = leerCarrito();
+    const cartData = await leerCarrito();
 
     let cartPorId = cartData.find(c => c.id === cartId)
 

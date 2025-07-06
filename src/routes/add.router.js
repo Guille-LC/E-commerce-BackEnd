@@ -1,44 +1,15 @@
 import { Router } from "express";
 const router = Router()
-import fs from 'fs';
-import __dirname from "../utils.js";
-
-const rutaArchivo = `${__dirname}/data/carts.json`
-const codeFormat = 'utf-8'
-
-function leerProductos() {
-    const data = fs.readFileSync(`${__dirname}/data/products.json`, 'utf-8');
-    return JSON.parse(data) ;
-}
-
-function leerCarrito() {
-    try {
-        const cartData = fs.readFileSync(rutaArchivo,codeFormat);
-        return JSON.parse(cartData)
-    } catch (error) {
-        console.error("❌ Error al leer archivo:", error.message);
-        return [];
-    }
-}
-
-function guardarCarrito(data) {
-    try {
-        fs.writeFileSync(rutaArchivo,JSON.stringify(data, null, 2),codeFormat);
-        return true;
-    } catch (error) {
-        console.error("❌ Error al guardar archivo:", error.message);
-        return false;
-    }
-}
+import {__dirname,leerProductos,leerCarrito,guardarCarrito} from "../utils.js";
 
 //POST
-router.post("/addToCart/:cartId/products/:productId", (req,res) => {
+router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     let {cartId,productId} = req.params;
     cartId = parseInt(cartId);
     productId = parseInt(productId);
 
-    const carts = leerCarrito();
-    const products = leerProductos();
+    const carts = await leerCarrito();
+    const products = await leerProductos();
 
     const carrito = carts.find(c => c.id === cartId);
     if (!carrito) {
@@ -63,7 +34,7 @@ router.post("/addToCart/:cartId/products/:productId", (req,res) => {
         carrito.productsArray.push({ productId: productId, quantity: 1 });
     }
 
-    const exito = guardarCarrito(carts);
+    const exito = await guardarCarrito(carts);
 
     if (exito) {
         res.send({

@@ -93,7 +93,7 @@ socketServer.on('connection', socket => {
         ...data
       }
       productos.push(nuevoProducto);
-      let productosActualizados = guardarArchivos(`${__dirname}/data/products.json`, productos);
+      let productosActualizados = guardarArchivos(productos);
       socketServer.emit('actualizarProductos', productosActualizados);
     } catch (error) {
       console.log("Error: ", error);

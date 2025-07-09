@@ -6,7 +6,7 @@ import { __dirname, leerCarrito, guardarCarrito,generarIdUnico} from '../utils.j
 router.post("/createCart", async (req,res) => {
     let carts = await leerCarrito();
 
-    let cartId = await generarIdUnico(carts);
+    let cartId = generarIdUnico(carts);
     let products = [];
 
     let carrito = {

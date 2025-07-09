@@ -18,6 +18,11 @@ form.addEventListener('submit', (e) => {
 
     socket.emit('nuevoProducto', nuevoProducto);
     console.log(nuevoProducto);
+    Swal.fire({
+        title: "¡Producto creado!",
+        text: "(La lista de productos se ha actualizado)",
+        icon: "success"
+    });
     form.reset();
 });
 

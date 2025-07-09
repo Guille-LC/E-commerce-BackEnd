@@ -1,18 +1,18 @@
 import { Router } from "express";
 const router = Router()
-import { __dirname, leerCarrito, guardarCarrito} from '../utils.js'
+import { __dirname, leerCarrito, guardarCarrito,generarIdUnico} from '../utils.js'
 
 //POST
 router.post("/createCart", async (req,res) => {
-    let cartId = Math.floor(Math.random() * 100 + 1)
+    let carts = await leerCarrito();
+
+    let cartId = await generarIdUnico(carts);
     let products = [];
 
     let carrito = {
         id: cartId,
         productsArray: products
     }
-
-    let carts = await leerCarrito();
 
     carts.push(carrito)
     

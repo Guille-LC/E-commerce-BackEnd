@@ -63,5 +63,16 @@
     "thumbnails": [
       "https://image.tmdb.org/t/p/original/aVNqeE2JjiW7VMSmkxPdN0Xd5xo.jpg"
     ]
+  },
+  {
+    "id": 51,
+    "title": "Volver al futuro",
+    "description": "Una máquina del tiempo transporta a un adolescente a los años 50, cuando sus padres todavía estudiaban en la secundaria.",
+    "code": "as1",
+    "price": 2400,
+    "status": true,
+    "stock": 21,
+    "category": "Ciencia Ficcion",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSARwCFB6M36a-YEdVSHKjbJjAiic23UyYlvA&s"
   }
 ]

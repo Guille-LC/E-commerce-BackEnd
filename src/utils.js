@@ -6,12 +6,13 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 //Variables constantes
-const rutaArchivo = `${__dirname}/data/carts.json`
+const rutaCarrito = `${__dirname}/data/carts.json`
+const rutaProductos = `${__dirname}/data/products.json`
 const codeFormat = 'utf-8'
 
 export async function leerProductos() {
     try {
-        const data = await fs.readFile(`${__dirname}/data/products.json`, 'utf-8');
+        const data = await fs.readFile(rutaProductos,codeFormat);
         return JSON.parse(data) ;
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);
@@ -21,7 +22,7 @@ export async function leerProductos() {
 
 export async function leerCarrito() {
     try {
-        const cartData = await fs.readFile(`${__dirname}/data/carts.json`,'utf-8');
+        const cartData = await fs.readFile(rutaCarrito,codeFormat);
         return JSON.parse(cartData)
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);
@@ -31,7 +32,7 @@ export async function leerCarrito() {
 
 export async function leerArchivos() {
     try {
-        const data = await fs.readFileSync(rutaArchivo,codeFormat);
+        const data = await fs.readFileSync(rutaProductos,codeFormat);
         return JSON.parse(data);
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);
@@ -41,7 +42,7 @@ export async function leerArchivos() {
 
 export async function guardarArchivos(products) {
     try {
-        await fs.writeFile(`${__dirname}/data/products.json`, JSON.stringify(products, null, 2), 'utf-8');
+        await fs.writeFile(rutaProductos, JSON.stringify(products, null, 2),codeFormat);
         return true
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);
@@ -51,7 +52,7 @@ export async function guardarArchivos(products) {
 
 export async function guardarCarrito(data) {
     try {
-        await fs.writeFile(rutaArchivo,JSON.stringify(data, null, 2),codeFormat);
+        await fs.writeFile(rutaCarrito,JSON.stringify(data, null, 2),codeFormat);
         return true;
     } catch (error) {
         console.error("❌ Error al guardar archivo:", error.message);
@@ -59,7 +60,7 @@ export async function guardarCarrito(data) {
     }
 }
 
-export async function generarIdUnico(productos) {
+export function generarIdUnico(productos) {
     let id;
     let existe;
 

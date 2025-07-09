@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router()
-import {__dirname,leerArchivos,guardarArchivos} from "../utils.js";
+import {__dirname,leerArchivos,guardarArchivos,generarIdUnico} from "../utils.js";
 
 //GET: Todos los productos
 router.get("/", async (req,res) => {
@@ -38,7 +38,9 @@ router.post("/create", async (req,res) => {
 
     const products = await leerArchivos();
 
-    prod.id = Math.floor(Math.random() * 100 + 1);
+    let productId = generarIdUnico(products)
+
+    prod.id = productId
 
     products.push(prod)
 

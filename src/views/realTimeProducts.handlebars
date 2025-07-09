@@ -39,7 +39,7 @@
 <section>
     <h1>Lista de productos</h1>
     {{#if products.length}}
-        <ul class="flex">
+        <ul id="listaProductos" class="flex">
             {{#each products}}
                 <li class="films">
                     <h3>Titulo: {{this.title}}</h3>
@@ -49,7 +49,7 @@
                     <p>Estado: {{this.status}}</p>
                     <p>Stock: {{this.stock}}</p>
                     <p>Categoria: {{this.category}}</p>
-                    <img class="poster" src={{this.thumbnails}}></img>
+                    <img class="poster" src="{{#if this.image}}{{this.image}}{{else}}{{this.thumbnails}}{{/if}}" alt="{{this.title}}">
                 </li>
             {{/each}}
         </ul>

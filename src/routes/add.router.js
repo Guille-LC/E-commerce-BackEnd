@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router()
-import {__dirname,leerProductos,leerCarrito,guardarCarrito} from "../utils.js";
+import {__dirname,leerCarrito,guardarCarrito, leerArchivos} from "../utils.js";
 
 //POST
 router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
@@ -9,7 +9,7 @@ router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     productId = parseInt(productId);
 
     const carts = await leerCarrito();
-    const products = await leerProductos();
+    const products = await leerArchivos();
 
     const carrito = carts.find(c => c.id === cartId);
     if (!carrito) {

@@ -10,16 +10,6 @@ const rutaCarrito = `${__dirname}/data/carts.json`
 const rutaProductos = `${__dirname}/data/products.json`
 const codeFormat = 'utf-8'
 
-export async function leerProductos() {
-    try {
-        const data = await fs.readFile(rutaProductos,codeFormat);
-        return JSON.parse(data) ;
-    } catch (error) {
-        console.error("❌ Error al leer archivo:", error.message);
-        return [];
-    }
-}
-
 export async function leerCarrito() {
     try {
         const cartData = await fs.readFile(rutaCarrito,codeFormat);
@@ -32,7 +22,7 @@ export async function leerCarrito() {
 
 export async function leerArchivos() {
     try {
-        const data = await fs.readFileSync(rutaProductos,codeFormat);
+        const data = await fs.readFile(rutaProductos,codeFormat);
         return JSON.parse(data);
     } catch (error) {
         console.error("❌ Error al leer archivo:", error.message);

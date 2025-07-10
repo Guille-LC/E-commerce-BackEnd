@@ -6,7 +6,7 @@ import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
-import { __dirname, leerProductos, leerCarrito, guardarArchivos, generarIdUnico } from './utils.js'
+import { __dirname, leerCarrito, guardarArchivos, generarIdUnico, leerArchivos } from './utils.js'
 
 const app = express();
 const PORT = 8080;
@@ -23,7 +23,7 @@ app.set('view engine', 'handlebars');
 
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts', async (req,res) => {
-    const products = await leerProductos();
+    const products = await leerArchivos();
     res.render("realTimeProducts", {
       style: 'main.css',
       products})
@@ -49,7 +49,7 @@ const socketServer = new Server(httpServer);
 socketServer.on('connection', socket => {
   socket.on('nuevoProducto', async data => {
     try {
-      let productos = await leerProductos();
+      let productos = await leerArchivos();
       const nuevoProducto = {
         id: generarIdUnico(productos),
         ...data

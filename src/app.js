@@ -1,11 +1,12 @@
 //http://localhost:8080
 
-import express from 'express'
+import express, { response } from 'express'
+import handlebars from 'express-handlebars'
+import { Server } from 'socket.io'
+import mongoose, { mongo } from 'mongoose'
 import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
-import handlebars from 'express-handlebars'
-import { Server } from 'socket.io'
 import { __dirname, leerCarrito, guardarArchivos, generarIdUnico, leerArchivos } from './utils.js'
 
 const app = express();
@@ -66,3 +67,18 @@ socketServer.on('connection', socket => {
   socket.emit("msj2", "Soy el backend")
   socket.emit("msj3", "Soy el backend")
 })
+
+//Mongoose
+const pathDB = "mongodb+srv://guillermolavi96:x6HvQGJDYv9ltign@cluster0.ijlxqem.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const connectMongoDB = async () => {
+  await mongoose.connect(pathDB);
+  try {
+    await mongoose.connect(pathDB)
+    console.log("Conectado a la base de MongoDB!");
+  } catch (error) {
+    console.log("No se pudo conectar a la base de datos..." , error);
+    process.exit()
+  }
+}
+
+connectMongoDB();

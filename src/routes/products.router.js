@@ -1,6 +1,7 @@
 import { Router } from "express";
 const router = Router()
 import {__dirname,leerArchivos,guardarArchivos,generarIdUnico} from "../utils.js";
+import { filmsModel } from "../models/products.models.js";
 
 //GET: Todos los productos
 router.get("/", async (req,res) => {

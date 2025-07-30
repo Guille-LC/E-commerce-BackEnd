@@ -1,99 +1,77 @@
 import { Router } from "express";
 const router = Router()
-import {__dirname,leerArchivos,guardarArchivos,generarIdUnico} from "../utils.js";
+import {__dirname} from "../utils.js";
 import { filmsModel } from "../models/products.models.js";
 
 //GET: Todos los productos
 router.get("/", async (req,res) => {
-    const products = await leerArchivos()
 
-    if(!products || products.length === 0) {
-        return res.status(404).send({ status: "Error", message: "No se encontraron productos" });
+    try {
+        let products = await filmsModel.find();
+        res.send({ status: "Success", payload: products }); 
+        console.log(`¡Mongoose conectado correctamente!`);
+    } catch (error) {
+        console.log("No se pudo conectar con Moongose: " + error);
     }
-
-    res.send({ status: "Success", payload: products });
 })
 
 //GET: Por su ID
-router.get("/:productId", async (req,res) => {
-    let { productId } = req.params;
-    productId = parseInt(productId);
-    const products = await leerArchivos();
+router.get("/:pid", async (req,res) => {
 
-    const productPorId = products.find(p => p.id === productId)
+    try {
+        let {pid} = req.params;
+        let filmById = await filmsModel.findById(pid)
 
-    if(!products) {
-        return res.status(404).send({ status: "Error", message: `Producto con el id: ${productId} no encontrado.` });
+        if(!filmById) {
+            return res.status(404).send({
+                status: "Error",
+                message: `No se encontró el producto con ID ${pid}`
+            });
+        }
+        res.send({ status: "Success", payload: filmById })
+    } catch (error) {
+        console.log("No se pudo conectar con Moongose: " + error);
     }
-
-    res.send({ status: "Success", payload: productPorId});
 })
 
 //POST
 router.post("/create", async (req,res) => {
-    let prod = req.body;
-
-    if(!prod.title || !prod.description || !prod.code || !prod.price || !prod.status || !prod.stock || !prod.category) {
-        return res.status(400).send({status: "Error", message: "Campos incompletos"})
-    }
-
-    const products = await leerArchivos();
-
-    let productId = generarIdUnico(products)
-
-    prod.id = productId
-
-    products.push(prod)
-
-    const exito = await guardarArchivos(products);
-
-    if (exito) {
-        res.send({ status: "Success", payload: `Agregado el film con el id: ${prod.id}` });
-    } else {
-        res.status(500).send({ status: "Error", message: "No se pudo guardar el archivo." });
+    try {
+        const {title,description,code,price,status,stock,category,thumbnails} = req.body;
+        const film = await filmsModel.create({title,description,code,price,status,stock,category,thumbnails})
+        console.log(`Creado el film: ${film}`);
+        res.send({ status: "Success", payload: film._id });
+    } catch (error) {
+        console.log("No se pudo conectar con Moongose: " + error);
     }
 })
 
 //PUT
-router.put("/:productId", async (req,res) => {
-    const products = await leerArchivos()
+router.put("/:pid", async (req,res) => {
 
-    const { productId } = req.params;
-    let prodUpdate = req.body;
-    let productPosition = products.findIndex(p => p.id === parseInt(productId))
-
-    if(productPosition === -1) {
-        return res.status(404).send({status: "Error", message: "Producto no encontrado"})
+    try {
+        let {pid} = req.params;
+        let filmReplace = req.body;
+        if(!filmReplace.title || !filmReplace.description || !filmReplace.category) {
+            return res.send({status:"error", error:"Campos incompletos"})
+        }
+        let result = await filmsModel.updateOne({_id:pid}, filmReplace)
+        res.send({status: "Success", payload: result})
+    } catch (error) {
+        console.log("No se pudo conectar con Moongose: " + error);
     }
-    prodUpdate.id = products[productPosition].id
-    products[productPosition] = prodUpdate;
-
-    const exito = await guardarArchivos(products);
-
-    exito ? res.send({ status: "Success", message: `Producto con el id ${productId} actualizado exitosamente.` }) : res.status(500).send({ status: "Error", message: "No se pudo guardar el archivo actualizado.", payload: prodUpdate });
 })
 
 //DELETE
-router.delete("/:productId", async (req,res) => {
+router.delete("/:pid", async (req,res) => {
 
-    const products = await leerArchivos();
-
-    let { productId } = req.params;
-    productId = parseInt(productId);
-
-    let productPosition = products.findIndex(p => p.id === productId)
-
-    if(productPosition === -1) {
-        return res.send({status: "Error", message: "Producto no encontrado"})
+    try {
+        let {pid} = req.params;
+        let result = await filmsModel.deleteOne({_id:pid})
+        res.send({status: "Success", payload: result})
+    } catch (error) {
+        console.log("No se pudo conectar con Moongose: " + error);
     }
-
-    products.splice(productPosition, 1)
-
-    const exito = await guardarArchivos(products);
-
-    exito
-        ? res.send({ status: "Success", message: `Producto con el id ${productId} eliminado exitosamente.` })
-        : res.status(500).send({ status: "Error", message: "No se pudo guardar el archivo actualizado." });
 })
 
 export default router;

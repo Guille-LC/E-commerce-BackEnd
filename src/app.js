@@ -1,4 +1,5 @@
 //http://localhost:8080
+//Para correr la aplicacion escribir en consola: nodemon src/app.js
 
 import express, { response } from 'express'
 import handlebars from 'express-handlebars'
@@ -69,9 +70,8 @@ socketServer.on('connection', socket => {
 })
 
 //Mongoose
-const pathDB = "mongodb+srv://guillermolavi96:x6HvQGJDYv9ltign@cluster0.ijlxqem.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const pathDB = "mongodb+srv://guillermolavi96:x6HvQGJDYv9ltign@cluster0.ijlxqem.mongodb.net/EcommerceFilms?retryWrites=true&w=majority&appName=Cluster0"
 const connectMongoDB = async () => {
-  await mongoose.connect(pathDB);
   try {
     await mongoose.connect(pathDB)
     console.log("Conectado a la base de MongoDB!");

@@ -8,10 +8,16 @@ router.get("/", async (req,res) => {
 
     try {
         let products = await filmsModel.find();
+        if(!products) {
+            return res.status(404).send({
+                status: "Error",
+                message: `No se encontraron los productos...`
+            });
+        }
         res.send({ status: "Success", payload: products }); 
         console.log(`¡Mongoose conectado correctamente!`);
     } catch (error) {
-        console.log("No se pudo conectar con Moongose: " + error);
+        console.log("No se pudo encontrar los archivos: " + error);
     }
 })
 
@@ -42,7 +48,7 @@ router.post("/create", async (req,res) => {
         console.log(`Creado el film: ${film}`);
         res.send({ status: "Success", payload: film._id });
     } catch (error) {
-        console.log("No se pudo conectar con Moongose: " + error);
+        console.log("No se pudo crear: " + error);
     }
 })
 
@@ -51,6 +57,12 @@ router.put("/:pid", async (req,res) => {
 
     try {
         let {pid} = req.params;
+        if(!pid) {
+            return res.status(404).send({
+                status: "Error",
+                message: `No se encontró el producto con ID ${pid}`
+            });
+        }
         let filmReplace = req.body;
         if(!filmReplace.title || !filmReplace.description || !filmReplace.category) {
             return res.send({status:"error", error:"Campos incompletos"})
@@ -58,7 +70,7 @@ router.put("/:pid", async (req,res) => {
         let result = await filmsModel.updateOne({_id:pid}, filmReplace)
         res.send({status: "Success", payload: result})
     } catch (error) {
-        console.log("No se pudo conectar con Moongose: " + error);
+        console.log("No se pudo actualizar: " + error);
     }
 })
 
@@ -67,10 +79,16 @@ router.delete("/:pid", async (req,res) => {
 
     try {
         let {pid} = req.params;
+        if(!pid) {
+            return res.status(404).send({
+                status: "Error",
+                message: `No se encontró el producto con ID ${pid}`
+            });
+        }
         let result = await filmsModel.deleteOne({_id:pid})
         res.send({status: "Success", payload: result})
     } catch (error) {
-        console.log("No se pudo conectar con Moongose: " + error);
+        console.log("No se pudo eliminar: " + error);
     }
 })
 

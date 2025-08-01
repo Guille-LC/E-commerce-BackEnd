@@ -3,7 +3,10 @@ import mongoose, { Schema } from "mongoose";
 const filmsCollection = 'peliculas';
 
 const filmsSchema = new mongoose.Schema({
-    title: String,
+    title: {
+        type: String,
+        index: true
+    },
     description: String,
     code: String,
     price: Number,

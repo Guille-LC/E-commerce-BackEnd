@@ -1,6 +1,8 @@
 import { Router } from "express";
 const router = Router()
 import {__dirname,leerCarrito,guardarCarrito, leerArchivos} from "../utils.js";
+import { cartModel } from "../models/carritos.models.js";
+import { filmsModel } from "../models/products.models.js";
 
 //POST
 router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
@@ -8,8 +10,8 @@ router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     cartId = parseInt(cartId);
     productId = parseInt(productId);
 
-    const carts = await leerCarrito();
-    const products = await leerArchivos();
+    const carts = await cartModel.find();
+    const products = await filmsModel.find();
 
     const carrito = carts.find(c => c.id === cartId);
     if (!carrito) {

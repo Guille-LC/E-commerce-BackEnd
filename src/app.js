@@ -2,13 +2,17 @@
 //Para correr la aplicacion escribir en consola: nodemon src/app.js
 
 import express, { response } from 'express'
-import handlebars from 'express-handlebars'
+import exphbs from 'express-handlebars'
+import Handlebars from 'handlebars'
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 import { Server } from 'socket.io'
 import mongoose, { mongo } from 'mongoose'
 import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
 import { __dirname, leerCarrito, guardarArchivos, generarIdUnico, leerArchivos } from './utils.js'
+import { filmsModel } from './models/products.models.js'
+import { cartModel } from './models/carritos.models.js'
 
 const app = express();
 const PORT = 8080;
@@ -19,20 +23,22 @@ app.use(express.urlencoded({extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 //Handlebars
-app.engine('handlebars', handlebars.engine());
+app.engine('handlebars', exphbs.engine({
+  handlebars: allowInsecurePrototypeAccess(Handlebars)
+}));
 app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
 
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts', async (req,res) => {
-    const products = await leerArchivos();
+    let products = await filmsModel.find();
     res.render("realTimeProducts", {
       style: 'main.css',
       products})
 })
 
 app.get('/home', async (req,res) => {
-  const carritos = await leerCarrito();
+  const carritos = await cartModel.find();
   res.render("home", {
     style: "main.css",
     carritos})
@@ -51,7 +57,7 @@ const socketServer = new Server(httpServer);
 socketServer.on('connection', socket => {
   socket.on('nuevoProducto', async data => {
     try {
-      let productos = await leerArchivos();
+      let productos = await filmsModel.find();
       const nuevoProducto = {
         id: generarIdUnico(productos),
         ...data
@@ -75,6 +81,8 @@ const connectMongoDB = async () => {
   try {
     await mongoose.connect(pathDB)
     console.log("Conectado a la base de MongoDB!");
+    let response = await filmsModel.find().explain("executionStats")
+    console.log(response);
   } catch (error) {
     console.log("No se pudo conectar a la base de datos..." , error);
     process.exit()

@@ -1,10 +1,11 @@
 import { Router } from "express";
 const router = Router()
-import { __dirname, leerCarrito, guardarCarrito,generarIdUnico} from '../utils.js'
+import { __dirname,guardarCarrito,generarIdUnico} from '../utils.js'
+import { cartModel } from "../models/carritos.models.js";
 
 //POST
 router.post("/createCart", async (req,res) => {
-    let carts = await leerCarrito();
+    let carts = await cartModel.find();
 
     let cartId = generarIdUnico(carts);
     let products = [];
@@ -33,7 +34,7 @@ router.post("/createCart", async (req,res) => {
 
 //GET todos
 router.get("/all", async (req,res) => {
-    const carts = await leerCarrito();
+    const carts = await cartModel.find();
     res.send({ status: "Success", payload: carts })
 })
 
@@ -42,7 +43,7 @@ router.get("/getcart/:cartId", async (req,res) => {
     let { cartId } = req.params;
     cartId = parseInt(cartId);
 
-    const cartData = await leerCarrito();
+    const cartData = await cartModel.findById(cartId);
 
     let cartPorId = cartData.find(c => c.id === cartId)
 

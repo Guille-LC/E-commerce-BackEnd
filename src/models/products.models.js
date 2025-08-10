@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import mongoosePaginate  from "mongoose-paginate-v2";
 
 const filmsCollection = 'peliculas';
 
@@ -16,4 +17,5 @@ const filmsSchema = new mongoose.Schema({
     thumbnails: String
 })
 
+filmsSchema.plugin(mongoosePaginate)
 export const filmsModel = mongoose.model(filmsCollection,filmsSchema);

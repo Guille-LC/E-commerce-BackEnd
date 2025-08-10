@@ -64,9 +64,6 @@ router.put("/:pid", async (req,res) => {
             });
         }
         let filmReplace = req.body;
-        if(!filmReplace.title || !filmReplace.description || !filmReplace.category) {
-            return res.send({status:"error", error:"Campos incompletos"})
-        }
         let result = await filmsModel.updateOne({_id:pid}, filmReplace)
         res.send({status: "Success", payload: result})
     } catch (error) {

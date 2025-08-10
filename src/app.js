@@ -32,9 +32,29 @@ app.set('view engine', 'handlebars');
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts', async (req,res) => {
     let products = await filmsModel.find();
+
+    let page = await parseInt(req.query.page)
+    let limit = await parseInt(req.query.limit)
+
+    if (!page) page = 1;
+    if (!limit) limit = 5;
+
+    let result = await filmsModel.paginate({}, {limit: limit, page: page, lean: true})
+
+    result.prevLink = result.hasPrevPage ? `http://localhost:8080/realTimeProducts?page=${result.prevPage}` : ``
+    result.nextLink = result.hasNextPage ? `http://localhost:8080/realTimeProducts?page=${result.nextPage}` : ``
+
+    result.isValid = !(page <= 0 || page > result.totalPages)
+
     res.render("realTimeProducts", {
       style: 'main.css',
-      products})
+      products: result.docs,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.prevLink,
+      nextLink: result.nextLink,
+      page: result.page,
+      totalPages: result.totalPages})
 })
 
 app.get('/home', async (req,res) => {
@@ -84,13 +104,14 @@ const connectMongoDB = async () => {
     let response = await filmsModel.find().explain("executionStats")
     console.log(response);
 
-    /* cartModel.create({}) */
+    let movies = await filmsModel.paginate({},{limit: 5});
+    console.log(movies);
+    
 
+    /* cartModel.create({}) */
     /* const cart = await cartModel.findOne({_id: "68910f5d090b1522c269a183"})
     cart.products.push({productId: "688a81ad6cec6b7fadcd721e"})
-
     const result = await cartModel.updateOne({_id: "68910f5d090b1522c269a183"}, cart) */
-
     /* let cart = await cartModel.findOne({_id: "68910f5d090b1522c269a183"}).populate('products.productId')
     console.log(JSON.stringify(cart,null,2)); */
     

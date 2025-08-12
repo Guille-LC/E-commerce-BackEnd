@@ -1,0 +1,22 @@
+<div>
+    {{#if user}}
+    <h1>Bienvenido {{user.name}}</h1>
+    <br>
+    <h2>Tus datos:</h2>
+    <br>
+    <p>{{user.name}}</p>
+    <br>
+    <p>{{user.age}}</p>
+    <br>
+    <p>{{user.email}}</p>
+    <br>
+    {{else}}
+    <h1>Usted no ha iniciado la sesion...</h1>
+    <br>
+    <p>Inicie sesion para ver su perfil:</p>
+    <a href="/views/users/login">Log-In</a>
+    <br>
+    <p>Si no esta registrado, registrese:</p>
+    <a href="/views/users/register">Registrarse</a>
+    {{/if}}
+</div>

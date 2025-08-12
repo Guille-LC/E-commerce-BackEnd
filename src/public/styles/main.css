@@ -88,3 +88,13 @@ p {
 #createCart:hover {
     background: linear-gradient(to bottom right, #d9f99d, #84cc16, #65a30d);
 }
+
+.submitButton {
+    margin: 10px;
+    font-size: 1rem;
+}
+
+.submitButton:hover {
+    background-color: blue;
+    color: white;
+}

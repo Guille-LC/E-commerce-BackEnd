@@ -11,12 +11,13 @@ import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
 import cookiesRouter from './routes/cookies.router.js'
-import { __dirname, leerCarrito, guardarArchivos, generarIdUnico, leerArchivos } from './utils.js'
+import { __dirname, guardarArchivos, generarIdUnico } from './utils.js'
 import { filmsModel } from './models/products.models.js'
 import { cartModel } from './models/carritos.models.js'
-import FileStore from 'session-file-store'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import userViewsRouter from './routes/user.views.router.js'
+import sessionRouter from './routes/sessions.router.js'
 
 const app = express();
 const PORT = 8080;
@@ -82,10 +83,14 @@ app.get('/home', async (req,res) => {
     carritos})
 })
 
-//Rutas de producto y carrito
+//Rutas & endpoints para POSTMAN
 app.use("/api", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api", addToCart)
+
+//Login & Register
+app.use("/views/users", userViewsRouter)
+app.use("/api/sessions", sessionRouter)
 
 const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
 

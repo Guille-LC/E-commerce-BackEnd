@@ -14,9 +14,14 @@ import cookiesRouter from './routes/cookies.router.js'
 import { __dirname, leerCarrito, guardarArchivos, generarIdUnico, leerArchivos } from './utils.js'
 import { filmsModel } from './models/products.models.js'
 import { cartModel } from './models/carritos.models.js'
+import FileStore from 'session-file-store'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
 
 const app = express();
 const PORT = 8080;
+
+const pathDB = "mongodb+srv://guillermolavi96:x6HvQGJDYv9ltign@cluster0.ijlxqem.mongodb.net/EcommerceFilms?retryWrites=true&w=majority&appName=Cluster0"
 
 //Configuracion de Express
 app.use(express.json());
@@ -29,6 +34,18 @@ app.engine('handlebars', exphbs.engine({
 }));
 app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
+
+//Session Storage
+app.use(session({
+  store: MongoStore.create({
+    mongoUrl: pathDB,
+    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    ttl: 20
+  }),
+  secret:'s3cr3ts3ss10n',
+  resave:true,
+  saveUninitialized:true
+}))
 
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts', async (req,res) => {
@@ -100,7 +117,6 @@ socketServer.on('connection', socket => {
 })
 
 //Mongoose
-const pathDB = "mongodb+srv://guillermolavi96:x6HvQGJDYv9ltign@cluster0.ijlxqem.mongodb.net/EcommerceFilms?retryWrites=true&w=majority&appName=Cluster0"
 const connectMongoDB = async () => {
   try {
     await mongoose.connect(pathDB)
@@ -110,7 +126,6 @@ const connectMongoDB = async () => {
 
     let movies = await filmsModel.paginate({},{limit: 5});
     console.log(movies);
-    
 
     /* cartModel.create({}) */
     /* const cart = await cartModel.findOne({_id: "68910f5d090b1522c269a183"})

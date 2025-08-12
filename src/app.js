@@ -10,6 +10,7 @@ import mongoose, { mongo } from 'mongoose'
 import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
+import cookiesRouter from './routes/cookies.router.js'
 import { __dirname, leerCarrito, guardarArchivos, generarIdUnico, leerArchivos } from './utils.js'
 import { filmsModel } from './models/products.models.js'
 import { cartModel } from './models/carritos.models.js'
@@ -70,6 +71,9 @@ app.use("/api/carts", cartsRouter)
 app.use("/api", addToCart)
 
 const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
+
+//Cookies
+app.use("/", cookiesRouter)
 
 //Socket
 const socketServer = new Server(httpServer);

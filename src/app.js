@@ -18,6 +18,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import userViewsRouter from './routes/user.views.router.js'
 import sessionRouter from './routes/sessions.router.js'
+import FileStore from 'session-file-store';
 
 const app = express();
 const PORT = 8080;
@@ -38,7 +39,7 @@ app.set('view engine', 'handlebars');
 
 //Session Storage
 app.use(session({
-  store: MongoStore.create({
+    store: MongoStore.create({
     mongoUrl: pathDB,
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
     ttl: 20
@@ -47,6 +48,16 @@ app.use(session({
   resave:true,
   saveUninitialized:true
 }))
+
+app.get("/session", (req, res) => {
+    if (req.session.counter) {
+        req.session.counter++;
+        res.send(`Se ha visitado el sitio: '${req.session.counter}' veces`)
+    } else {
+        req.session.counter = 1
+        res.send("Bienvenido!!..")
+    }
+})
 
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts', async (req,res) => {

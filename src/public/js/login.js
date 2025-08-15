@@ -22,6 +22,14 @@ form.addEventListener("submit", e => {
             setTimeout(() => {
                 window.location.replace("/views/users/profile")
             }, 2000)
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "NO SE PUDO LOGUEAR",
+                text: "¡El usuario no existe!"
+            });
         }
-    }) 
+    }).catch(err => { 
+        console.log(err);
+    })
 })

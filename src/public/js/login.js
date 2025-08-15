@@ -7,15 +7,21 @@ form.addEventListener("submit", e => {
     data.forEach((value,key) => {
         obj[key] = value
     })
-    fetch("/views/users/login",{
+    fetch("/api/sessions/login",{
         method:"POST",
         body: JSON.stringify(obj),
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(result, () => {
+    }).then(result => {
         if(result.status == 200) {
-            window.location.replace("/views/users/profile")
+            Swal.fire({
+                title: `¡Bienvenido!`,
+                icon: "success"
+            });
+            setTimeout(() => {
+                window.location.replace("/views/users/profile")
+            }, 2000)
         }
     }) 
 })

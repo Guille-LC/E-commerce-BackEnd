@@ -1,3 +1,4 @@
+
 const form = document.getElementById("registerForm");
 
 form.addEventListener("submit", e => {
@@ -13,9 +14,17 @@ form.addEventListener("submit", e => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(result, () => {
-        if(result.status == 200) {
-            window.location.replace("/views/users/login")
+    }).then(result => {
+        if(result.status === 200) {
+            Swal.fire({
+                title: "¡Usuario registrado!",
+                icon: "success"
+            });
+            setTimeout(() => {
+                window.location.replace("/views/users/login")
+            }, 2000)
         }
-    }) 
+    }).catch(err => {  
+        console.log(err);
+    })
 })

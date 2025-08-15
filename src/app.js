@@ -138,10 +138,8 @@ const connectMongoDB = async () => {
     await mongoose.connect(pathDB)
     console.log("Conectado a la base de MongoDB!");
     let response = await filmsModel.find().explain("executionStats")
-    console.log(response);
-
+    
     let movies = await filmsModel.paginate({},{limit: 5});
-    console.log(movies);
 
     /* cartModel.create({}) */
     /* const cart = await cartModel.findOne({_id: "68910f5d090b1522c269a183"})

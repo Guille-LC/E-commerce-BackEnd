@@ -8,9 +8,11 @@ router.post("/register",async (req,res) => {
     if (exists) {
         return req.status(400).send({status: error, message:"El usuario ya existe."})
     }
-    userDTO = {name,age,email,password}
+    let userDTO = {name,age,email,password}
     const result = await userModel.create(userDTO)
-    res.send({status: "Succes", payload: `${result}`})
+    console.log(result);
+    
+    res.send({status: "Success", payload: `${result}`})
 })
 
 router.post("/login", async (req,res) => {
@@ -24,7 +26,7 @@ router.post("/login", async (req,res) => {
         email: user.email,
         age: user.age
     }
-    res.send({status: "Succes", payload: req.session.user, message: "Login"})
+    res.send({status: "Success", payload: req.session.user, message: "Login"})
 })
 
 export default router;

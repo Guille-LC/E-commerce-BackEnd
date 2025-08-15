@@ -7,6 +7,25 @@ h1 {
     font-size: 3rem;
 }
 
+.navbar {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(165, 255, 225);
+    font-size: 1.4rem;
+    padding: 10px;
+}
+
+.navbutton {
+    text-decoration: none;
+}
+
+.navbutton:hover {
+    background-color: rgb(0, 213, 213);
+    text-decoration: underline;
+}
+
 #formCrearProducto {
     border-color: rgb(160, 0, 0);
     border-style: outset;

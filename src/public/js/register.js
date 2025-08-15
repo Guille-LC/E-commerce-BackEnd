@@ -23,8 +23,14 @@ form.addEventListener("submit", e => {
             setTimeout(() => {
                 window.location.replace("/views/users/login")
             }, 2000)
+        } else {
+            Swal.fire({
+            icon: "error",
+            title: "NO SE PUDO REGISTRAR",
+            text: "¡El usuario ya existe!"
+            });
         }
-    }).catch(err => {  
+    }).catch(err => { 
         console.log(err);
     })
 })

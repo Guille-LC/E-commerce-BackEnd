@@ -26,7 +26,7 @@ form.addEventListener("submit", e => {
             Swal.fire({
                 icon: "error",
                 title: "NO SE PUDO LOGUEAR",
-                text: "¡El usuario no existe!"
+                text: "¡Algo salio mal!"
             });
         }
     }).catch(err => { 

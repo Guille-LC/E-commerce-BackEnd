@@ -1,9 +1,15 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import fs from 'fs/promises'
+import fs from 'fs/promises';
+import bcrypt from 'bcrypt'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+
+export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(12));
+export const isValidPassword = (passwordDB, passwordClient) => {
+    return bcrypt.compareSync(passwordClient,passwordDB)
+}
 
 //Variables constantes
 const rutaCarrito = `${__dirname}/data/carts.json`

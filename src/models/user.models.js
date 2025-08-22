@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
         unique:true,
         required:true
     },
-    password: String
+    password: String,
+    loggedBy: String
 })
 
 export const userModel = mongoose.model(usersCollection,userSchema)

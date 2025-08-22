@@ -20,12 +20,14 @@ import userViewsRouter from './routes/user.views.router.js'
 import sessionRouter from './routes/sessions.router.js'
 import initializePassport from './config/passport.config.js'
 import passport from 'passport'
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = 8080;
 
 //Ruta para la base de datos
-const pathDB = "mongodb+srv://guillermolavi96:x6HvQGJDYv9ltign@cluster0.ijlxqem.mongodb.net/EcommerceFilms?retryWrites=true&w=majority&appName=Cluster0"
+const pathDB = process.env.MONGO_URL;
 
 //Configuracion de Express
 app.use(express.json());
@@ -43,7 +45,7 @@ app.set('view engine', 'handlebars');
 app.use(session({
     store: MongoStore.create({
     mongoUrl: pathDB,
-    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    mongoOptions: {},
     ttl: 20
   }),
   secret:'s3cr3ts3ss10n',

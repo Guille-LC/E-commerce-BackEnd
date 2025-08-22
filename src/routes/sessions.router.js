@@ -4,6 +4,17 @@ import { userModel } from "../models/user.models.js";
 import { createHash,isValidPassword } from "../utils.js";
 import passport from "passport";
 
+router.get("/github",passport.authenticate('github',{scope:'[user:email]'}))
+
+router.get("/githubcallback",passport.authenticate('github',{failureRedirect:'/api/sessions/failedregister'}) ,async (req,res) => {
+    const user = req.user;
+    req.session.user = {
+        name: user.first_name,
+        email: user.email
+    }
+    res.redirect("/views/users/profile")
+})
+
 router.post("/register",passport.authenticate('register',{failureRedirect:'/api/sessions/failedregister'}) ,async (req,res) => {
     res.send({status: "Succes", payload: `Usuario registrado`})
 })

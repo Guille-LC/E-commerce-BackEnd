@@ -2,35 +2,28 @@ import { Router } from "express";
 const router = Router();
 import { userModel } from "../models/user.models.js";
 import { createHash,isValidPassword } from "../utils.js";
+import passport from "passport";
 
-router.post("/register",async (req,res) => {
-    const {name,age,email,password} = req.body;
-    const exists = await userModel.findOne({email})
-    if (exists) {
-        return res.status(400).send({status: "error", message:"El usuario ya existe."})
-    }
-    let userDTO = {name,age,email,password: createHash(password)}
-    const result = await userModel.create(userDTO)
-    res.send({status: "Succes", payload: `${result}`})
+router.post("/register",passport.authenticate('register',{failureRedirect:'/api/sessions/failedregister'}) ,async (req,res) => {
+    res.send({status: "Succes", payload: `Usuario registrado`})
 })
 
-router.post("/login", async (req,res) => {
-    const {email,password} = req.body;
-    const user = await userModel.findOne({email})
-    if (!user) {
-        return res.status(401).send({status: "error", message:"Datos invalidos."})
-    }
+router.get("/failedregister", (req,res) => {
+    res.status(401).send({error: "Error al registrar al usuario"})
+})
 
-    if (!isValidPassword(user.password, password)) {
-        return res.status(401).send({status: "error", message: "Credenciales incorrectas"})
-    }
-
+router.post("/login",passport.authenticate('login', {failureRedirect:'/api/sessions/failedlogin'}) ,async (req,res) => {
+    const user = req.user;
     req.session.user = {
         name: user.name,
         email: user.email,
         age: user.age
     }
     res.send({status: "Succes", payload: req.session.user, message: "Login"})
+})
+
+router.get("/failedlogin", (req,res) => {
+    res.status(401).send({error: "Error al loguear al usuario"})
 })
 
 export default router;

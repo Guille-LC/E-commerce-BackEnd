@@ -18,11 +18,13 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import userViewsRouter from './routes/user.views.router.js'
 import sessionRouter from './routes/sessions.router.js'
-import FileStore from 'session-file-store';
+import initializePassport from './config/passport.config.js'
+import passport from 'passport'
 
 const app = express();
 const PORT = 8080;
 
+//Ruta para la base de datos
 const pathDB = "mongodb+srv://guillermolavi96:x6HvQGJDYv9ltign@cluster0.ijlxqem.mongodb.net/EcommerceFilms?retryWrites=true&w=majority&appName=Cluster0"
 
 //Configuracion de Express
@@ -58,6 +60,11 @@ app.get("/session", (req, res) => {
         res.send("Bienvenido!!..")
     }
 })
+
+//Passport
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts', async (req,res) => {

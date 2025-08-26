@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authToken } from "../utils.js";
 const router = Router();
 
 router.get("/login", (req,res) => {
@@ -9,7 +10,7 @@ router.get("/register", (req,res) => {
     res.render("register")
 })
 
-router.get("/profile", (req,res) => {
+router.get("/profile", authToken, (req,res) => {
     res.render("profile",{
         user: req.session.user
     })

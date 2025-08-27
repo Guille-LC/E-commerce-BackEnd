@@ -76,7 +76,7 @@ const initializePassport = () => {
                     return done(null,false)
                 }
                 if (!isValidPassword(user.password, password)) {
-                    return res.status(401).send({status: "error", message: "Credenciales incorrectas"})
+                    return done(null,false)
                 }
                 return done(null,user)
             } catch (error) {

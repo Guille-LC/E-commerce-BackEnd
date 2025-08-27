@@ -12,7 +12,7 @@ router.get("/register", (req,res) => {
 
 router.get("/profile", authToken, (req,res) => {
     res.render("profile",{
-        user: req.session.user
+        user: req.user
     })
 })
 

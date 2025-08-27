@@ -25,7 +25,8 @@ export const authToken = (req,res,next) => {
         return res.status(401).send({error: 'Token missing'})
     }
     const token = authHeader.split(' ')[1];
-
+    console.log(token);
+    
     jwt.verify(token,PRIVATE_KEY,(err, credentials) => {
         if(err) {
             return res.status(403).send({error: 'Token invalido'})

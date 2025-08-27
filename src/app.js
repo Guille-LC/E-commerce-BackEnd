@@ -28,6 +28,8 @@ const PORT = 8080;
 
 //Ruta para la base de datos
 const pathDB = process.env.MONGO_URL;
+console.log(pathDB);
+
 
 //Configuracion de Express
 app.use(express.json());

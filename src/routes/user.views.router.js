@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { authToken } from "../utils.js";
+import passport from "passport";
 const router = Router();
 
 router.get("/login", (req,res) => {
@@ -10,7 +11,7 @@ router.get("/register", (req,res) => {
     res.render("register")
 })
 
-router.get("/profile", authToken, (req,res) => {
+router.get("/profile", passport.authenticate('jwt', {session:false}), (req,res) => {
     res.render("profile",{
         user: req.user
     })

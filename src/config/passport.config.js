@@ -1,5 +1,7 @@
 import passport from "passport";
 import passportLocal from 'passport-local';
+import jwtStrategy from 'passport-jwt';
+import { PRIVATE_KEY } from "../utils.js";
 import { isValidPassword,createHash } from "../utils.js";
 import { userModel } from "../models/user.models.js";
 import GithubStrategy from 'passport-github2';
@@ -8,7 +10,22 @@ dotenv.config();
 
 const localStrategy = passportLocal.Strategy;
 
+const JwtStrategy = jwtStrategy.Strategy;
+const ExtractJwt = jwtStrategy.ExtractJwt;
+
 const initializePassport = () => {
+
+    passport.use('jwt', new JwtStrategy({
+        jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]), 
+        secretOrKey: PRIVATE_KEY
+        }, async(jwt_payload,done) => {
+            try {
+                return done(null,jwt_payload)
+            } catch (error) {
+                return done(error)
+            }
+    }))
+
     //Estrategia de Github
     passport.use('github', new GithubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
@@ -34,7 +51,7 @@ const initializePassport = () => {
             return done(error)
         }
     }
-))
+    ))
 
     //Estrategia local
     passport.use('register', new localStrategy(
@@ -95,6 +112,15 @@ const initializePassport = () => {
             return done(error,null)
         }
     })
+}
+
+const cookieExtractor = req => {
+    let token = null;
+    if (req && req.cookies) {
+        token = req.cookies['jwtCookieToken']
+        console.log('jwtCookieToken:' + token);
+    }
+    return token
 }
 
 export default initializePassport;

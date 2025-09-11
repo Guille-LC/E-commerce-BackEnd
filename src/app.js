@@ -21,15 +21,18 @@ import sessionRouter from './routes/sessions.router.js'
 import initializePassport from './config/passport.config.js'
 import passport from 'passport'
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+
 dotenv.config();
 
 const app = express();
 const PORT = 8080;
 
+app.use(cookieParser())
+
 //Ruta para la base de datos
 const pathDB = process.env.MONGO_URL;
 console.log(pathDB);
-
 
 //Configuracion de Express
 app.use(express.json());

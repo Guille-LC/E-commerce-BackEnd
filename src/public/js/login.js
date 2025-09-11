@@ -11,7 +11,7 @@ form.addEventListener("submit", e => {
         method:"POST",
         body: JSON.stringify(obj),
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
     }).then(result => {
         if(result.status == 200) {

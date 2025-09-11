@@ -7,14 +7,14 @@ import jwt from 'jsonwebtoken'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-
 //Variables constantes
 const rutaCarrito = `${__dirname}/data/carts.json`
 const rutaProductos = `${__dirname}/data/products.json`
 const codeFormat = 'utf-8'
 
+
 //JWT
-const PRIVATE_KEY = 'k0d3rs3cr3tk3y'
+export const PRIVATE_KEY = 'k0d3rs3cr3tk3y';
 export const generateToken = user => {
     return jwt.sign({user}, PRIVATE_KEY, {expiresIn: '1h'})
 }
@@ -43,6 +43,7 @@ export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSy
 export const isValidPassword = (passwordDB, passwordClient) => {
     return bcrypt.compareSync(passwordClient,passwordDB)
 }
+
 
 export async function leerCarrito() {
     try {

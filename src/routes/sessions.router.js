@@ -23,14 +23,17 @@ router.get("/failedregister", (req,res) => {
     res.status(401).send({error: "Error al registrar al usuario"})
 })
 
+
 router.post("/login",passport.authenticate('login', {failureRedirect:'/api/sessions/failedlogin'}) ,async (req,res) => {
     const user = req.user;
-    /* req.session.user = {
-        name: user.name,
-        email: user.email,
-        age: user.age
-    } */
+    
     const acces_token = generateToken(user);
+
+    res.cookie('jwtCookieToken', acces_token, {
+        maxAge: 50000,
+        httpOnly: true
+    });
+
     res.send({status: "Succes", acces_token: acces_token})
 })
 

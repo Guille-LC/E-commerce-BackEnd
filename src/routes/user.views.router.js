@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { authToken } from "../utils.js";
-import passport from "passport";
 const router = Router();
+import { passportCallback,authorization } from "../utils.js";
 
 router.get("/login", (req,res) => {
     res.render("login",{style:"main.css"})
@@ -11,9 +10,9 @@ router.get("/register", (req,res) => {
     res.render("register")
 })
 
-router.get("/profile", passport.authenticate('jwt', {session:false}), (req,res) => {
+router.get("/profile", passportCallback('jwt'),authorization('admin') , (req,res) => {
     res.render("profile",{
-        user: req.user
+        user: req.user.user
     })
 })
 

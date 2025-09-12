@@ -3,6 +3,7 @@ import { dirname } from 'path';
 import fs from 'fs/promises';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import passport from 'passport';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -36,6 +37,31 @@ export const authToken = (req,res,next) => {
 
         next()
     })
+}
+
+//Passport Callback => Unauthorized 401
+export const passportCallback = strategy => {
+    return async(req,res, next) => {
+        passport.authenticate(strategy,function(error,user,info) {
+            if(error) return next(error)
+            if(!user) return res.status(401).send({error: info.message ? info.message : info.toString()})
+            req.user = user;
+            next()
+        })(req,res,next)
+    }
+}
+
+//Autorizacion
+export const authorization = role => {
+    return async (req,res,next) => {
+        if(!req.user) {
+            return res.status(401).send('Usuario no autenticado con JWT.')
+        }
+        if(req.user.user.role !== role) {
+            return res.status(403).send('Usuario no autorizado.')
+        }
+        next()
+    }
 }
 
 //Bcrypt

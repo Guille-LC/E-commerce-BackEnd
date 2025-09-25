@@ -6,7 +6,6 @@ import exphbs from 'express-handlebars'
 import Handlebars from 'handlebars'
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 import { Server } from 'socket.io'
-import mongoose, { mongo } from 'mongoose'
 import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
@@ -22,6 +21,8 @@ import initializePassport from './config/passport.config.js'
 import passport from 'passport'
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import config from './config/config.js'
+import MongoDBSingleton from './config/mongodbSingleton.js'
 
 dotenv.config();
 
@@ -32,7 +33,6 @@ app.use(cookieParser())
 
 //Ruta para la base de datos
 const pathDB = process.env.MONGO_URL;
-console.log(pathDB);
 
 //Configuracion de Express
 app.use(express.json());
@@ -117,10 +117,10 @@ app.use("/api", addToCart)
 app.use("/views/users", userViewsRouter)
 app.use("/api/sessions", sessionRouter)
 
-const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
-
 //Cookies
 app.use("/", cookiesRouter)
+
+const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
 
 //Socket
 const socketServer = new Server(httpServer);
@@ -146,26 +146,11 @@ socketServer.on('connection', socket => {
   socket.emit("msj3", "Soy el backend")
 })
 
-//Mongoose
-const connectMongoDB = async () => {
+const mongoInstance = async() => {
   try {
-    await mongoose.connect(pathDB)
-    console.log("Conectado a la base de MongoDB!");
-    let response = await filmsModel.find().explain("executionStats")
-    
-    let movies = await filmsModel.paginate({},{limit: 5});
-
-    /* cartModel.create({}) */
-    /* const cart = await cartModel.findOne({_id: "68910f5d090b1522c269a183"})
-    cart.products.push({productId: "688a81ad6cec6b7fadcd721e"})
-    const result = await cartModel.updateOne({_id: "68910f5d090b1522c269a183"}, cart) */
-    /* let cart = await cartModel.findOne({_id: "68910f5d090b1522c269a183"}).populate('products.productId')
-    console.log(JSON.stringify(cart,null,2)); */
-    
+    await MongoDBSingleton.getInstance()
   } catch (error) {
-    console.log("No se pudo conectar a la base de datos..." , error);
-    process.exit()
+    console.error(error);
   }
 }
-
-connectMongoDB();
+mongoInstance()

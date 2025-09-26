@@ -22,6 +22,6 @@ export default class ProductsDAO {
     }
 
     async deleteProduct(pid) {
-        return await filmsModel.deleteOne(pid)
+        return await filmsModel.deleteOne({ _id: pid })
     }
 }

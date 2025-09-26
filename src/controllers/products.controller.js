@@ -16,7 +16,7 @@ export const getProductsController = async (req,res) => {
     }
 }
 
-//GET
+//GET por ID
 export const getProductByIdController = async (req,res) => {
     try {
         let {pid} = req.params;

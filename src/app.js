@@ -75,8 +75,6 @@ app.use(passport.session())
 
 //Ruta de Handlebars para ver los productos y los carritos
 app.get('/realTimeProducts', async (req,res) => {
-    let products = await filmsModel.find();
-
     let page = await parseInt(req.query.page)
     let limit = await parseInt(req.query.limit)
 

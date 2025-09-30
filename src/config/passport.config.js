@@ -61,7 +61,7 @@ const initializePassport = () => {
         },
         async (req, username, isValidPassword, done) => {
             try {
-                const {name,age,email,password} = req.body;
+                const {name,age,email,role ,password} = req.body;
                 const exists = await userModel.findOne({email})
                     if (exists) {
                         return done(null,false)
@@ -70,6 +70,7 @@ const initializePassport = () => {
                         name,
                         age,
                         email,
+                        role,
                         password: createHash(password),
                         loggedBy: `Passport Local`
                     }
@@ -80,6 +81,7 @@ const initializePassport = () => {
             }
         },
     ))
+
     passport.use('login', new localStrategy(
         {
             passReqToCallback: true,
@@ -101,9 +103,13 @@ const initializePassport = () => {
             }
         }
     ))
+
+    //Serializar
     passport.serializeUser((user,done) => {
         done(null,user._id)
     })
+
+    //Deserializar
     passport.deserializeUser(async (id,done) => {
         try {
             const user = await userModel.findById(id);
@@ -114,6 +120,7 @@ const initializePassport = () => {
     })
 }
 
+//Token JWT en Cookie
 const cookieExtractor = req => {
     let token = null;
     if (req && req.cookies) {

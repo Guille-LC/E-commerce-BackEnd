@@ -1,7 +1,7 @@
 import { Router } from "express";
-const router = Router();
 import { createHash,generateToken,isValidPassword } from "../utils.js";
 import passport from "passport";
+const router = Router();
 
 router.get("/github",passport.authenticate('github',{scope:'[user:email]'}))
 
@@ -22,18 +22,25 @@ router.get("/failedregister", (req,res) => {
     res.status(401).send({error: "Error al registrar al usuario"})
 })
 
-
 router.post("/login",passport.authenticate('login', {failureRedirect:'/api/sessions/failedlogin'}) ,async (req,res) => {
     const user = req.user;
     
     const acces_token = generateToken(user);
 
     res.cookie('jwtCookieToken', acces_token, {
-        maxAge: 50000,
+        maxAge: 60 * 60 * 1000,
         httpOnly: true
     });
 
-    res.send({status: "Succes", acces_token: acces_token})
+    res.status(200).send({
+        status: "Succes",
+        acces_token: acces_token,
+        user: {
+            name: user.name,
+            email: user.email,
+            role: user.role
+        }
+    })
 })
 
 router.get("/failedlogin", (req,res) => {

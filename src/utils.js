@@ -16,17 +16,16 @@ const codeFormat = 'utf-8'
 
 //JWT
 export const PRIVATE_KEY = 'k0d3rs3cr3tk3y';
+
 export const generateToken = user => {
-    return jwt.sign({user}, PRIVATE_KEY, {expiresIn: '1h'})
+    return jwt.sign({user}, PRIVATE_KEY, {expiresIn: '3h'})
 }
 
 export const authToken = (req,res,next) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).send({error: 'Token missing'})
+    const token = req.cookies.jwtCookieToken;
+    if (!token) {
+        return res.status(401).send({ error: "Token missing" });
     }
-    const token = authHeader.split(' ')[1];
-    console.log(token);
     
     jwt.verify(token,PRIVATE_KEY,(err, credentials) => {
         if(err) {
@@ -66,10 +65,10 @@ export const authorization = role => {
 
 //Bcrypt
 export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(12));
+
 export const isValidPassword = (passwordDB, passwordClient) => {
     return bcrypt.compareSync(passwordClient,passwordDB)
 }
-
 
 export async function leerCarrito() {
     try {

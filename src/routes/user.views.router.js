@@ -10,8 +10,14 @@ router.get("/register", (req,res) => {
     res.render("register")
 })
 
-router.get("/profile", passportCallback('jwt'),authorization('admin') , (req,res) => {
+router.get("/profile", passportCallback('jwt'), authorization('user'), (req,res) => {
     res.render("profile",{
+        user: req.user.user
+    })
+})
+
+router.get("/admin", passportCallback('jwt'), authorization('admin'), (req,res) => {
+    res.render("admin",{
         user: req.user.user
     })
 })

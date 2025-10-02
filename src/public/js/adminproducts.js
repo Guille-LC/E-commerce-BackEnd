@@ -51,3 +51,45 @@ form.addEventListener('submit', async (e) => {
         });
     }
 });
+
+const deleteForm = document.getElementById('deleteproduct');
+
+deleteForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById('id').value.trim();
+
+    if(!id) {
+        Swal.fire({
+            title: "Error",
+            text: "Debe ingresar un ID válido",
+            icon: "error"
+        });
+        return;
+    }
+
+    try {
+        const res = await fetch(`/api/${id}`,{
+            method: "DELETE"
+        });
+
+        if(!res.ok)  throw new Error(`Error HTTP: ${res.status}`);
+
+        const data = await res.json()
+        console.log(data);
+        Swal.fire({
+            title: "¡Producto eliminado!",
+            text: `(ID: ${id})`,
+            icon: "success"
+        });
+
+        deleteForm.reset();
+    } catch (error) {
+        console.error("Error al eliminar producto:", error);
+        Swal.fire({
+            title: "Error",
+            text: "No se pudo eliminar el producto",
+            icon: "error"
+        });
+    }
+})

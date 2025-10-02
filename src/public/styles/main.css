@@ -117,3 +117,15 @@ p {
     background-color: blue;
     color: white;
 }
+
+.adddelete {
+    display: flex;
+    justify-content: center;
+    gap: 200px;
+}
+
+.adminaction {
+    border-width: 5px;
+    border-style: solid;
+    border: #d9f99d;
+}

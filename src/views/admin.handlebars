@@ -13,8 +13,9 @@
     <p>{{user.role}}</p>
     <br>
     {{!-- Agregar un producto --}}
-    <section>
-        <h1>Agregar un producto</h1>
+    <div class="adddelete">
+        <section class="adminaction">
+        <h2>Agregar un producto</h2>
         <form id="formCrearProducto">
             <label for="title">Título:</label>
             <input type="text" id="title" name="title" required>
@@ -46,6 +47,16 @@
             <button type="submit">Crear producto</button>
         </form>
     </section> 
+
+    <section class="adminaction">
+        <h2>Eliminar un producto</h2>
+        <p>Ingrese el ID del producto:</p>
+        <form id="deleteproduct">
+            <label for="id">ID</label>
+            <input type="text" id="id" name="id" required>
+            <button type="submit">Eliminar</button>
+        </form>
+    </section>
     {{else}}
     <h1>Usted no ha iniciado la sesion...</h1>
     <br>
@@ -55,6 +66,7 @@
     <p>Si no esta registrado, registrese:</p>
     <a href="/views/users/register">Registrarse</a>
     {{/if}}
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -22,7 +22,7 @@ export default class MongoDBSingleton {
         try {
             console.log('DB: ', config.mongoUrl);
             await mongoose.connect(config.mongoUrl);
-            console.log("¡Conectado a la base de datos de Mongo!");
+            console.log("Singleton: ¡Conectado a la base de datos de Mongo!");
         } catch (error) {
             console.error(`No se pudo conectar a la base de datos: ${error}`);
             process.exit()

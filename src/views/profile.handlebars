@@ -12,6 +12,18 @@
     <br>
     <p>{{user.role}}</p>
     <br>
+
+    <section>
+        <h2>Agregar producto al carrito</h2>
+        <form id="addtocart">
+            <label for="cartid">ID del carrito</label>
+            <input type="text" id="cartid" name="cartid" required>
+            <label for="productid">ID del producto</label>
+            <input type="text" id="productid" name="productid" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </section>
+
     {{else}}
     <h1>Usted no ha iniciado la sesion...</h1>
     <br>
@@ -22,3 +34,6 @@
     <a href="/views/users/register">Registrarse</a>
     {{/if}}
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/useraddtocart.js"></script>

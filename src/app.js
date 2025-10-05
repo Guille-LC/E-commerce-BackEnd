@@ -17,11 +17,11 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import userViewsRouter from './routes/user.views.router.js'
 import sessionRouter from './routes/sessions.router.js'
+import mockFakerRouter from './routes/mock.router.js'
 import initializePassport from './config/passport.config.js'
 import passport from 'passport'
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import config from './config/config.js'
 import MongoDBSingleton from './config/mongodbSingleton.js'
 
 dotenv.config();
@@ -57,16 +57,6 @@ app.use(session({
   resave:true,
   saveUninitialized:true
 }))
-
-app.get("/session", (req, res) => {
-    if (req.session.counter) {
-        req.session.counter++;
-        res.send(`Se ha visitado el sitio: '${req.session.counter}' veces`)
-    } else {
-        req.session.counter = 1
-        res.send("Bienvenido!!..")
-    }
-})
 
 //Passport
 initializePassport()
@@ -114,6 +104,9 @@ app.use("/api", addToCart)
 //Login & Register
 app.use("/views/users", userViewsRouter)
 app.use("/api/sessions", sessionRouter)
+
+//Mock
+app.use("/api/mockusers", mockFakerRouter)
 
 //Cookies
 app.use("/", cookiesRouter)

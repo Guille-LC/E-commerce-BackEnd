@@ -45,8 +45,8 @@ export const passportCallback = strategy => {
             if(error) return next(error)
             if(!user) return res.status(401).send({error: info.message ? info.message : info.toString()})
             req.user = user;
-            next()
-        })(req,res,next)
+        next()
+    })(req,res,next)
     }
 }
 
@@ -70,12 +70,24 @@ export const isValidPassword = (passwordDB, passwordClient) => {
     return bcrypt.compareSync(passwordClient,passwordDB)
 }
 
+export function generarIdUnico(productos) {
+    let id;
+    let existe;
+
+    do {
+        id = Math.floor(Math.random() * 100) + 1;
+        existe = productos.some(p => p.id === id);
+    } while (existe);
+
+    return id;
+}
+
 export async function leerCarrito() {
     try {
         const cartData = await fs.readFile(rutaCarrito,codeFormat);
         return JSON.parse(cartData)
-    } catch (error) {
-        console.error("❌ Error al leer archivo:", error.message);
+        } catch (error) {
+            console.error("❌ Error al leer archivo:", error.message);
         return [];
     }
 }
@@ -108,18 +120,6 @@ export async function guardarCarrito(data) {
         console.error("❌ Error al guardar archivo:", error.message);
         return false;
     }
-}
-
-export function generarIdUnico(productos) {
-    let id;
-    let existe;
-
-    do {
-        id = Math.floor(Math.random() * 100) + 1;
-        existe = productos.some(p => p.id === id);
-    } while (existe);
-
-    return id;
 }
 
 export {__dirname};

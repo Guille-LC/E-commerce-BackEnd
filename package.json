@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@faker-js/faker": "^9.9.0",
     "@handlebars/allow-prototype-access": "^1.0.5",
     "bcrypt": "^6.0.0",
     "commander": "^14.0.1",

@@ -13,7 +13,14 @@
     <p>{{user.role}}</p>
     <br>
 
-    <section>
+    {{#if user.cartId}}
+        <p>ID de tu Carrito: <span>{{user.cartId}}</span></p>
+        <a href="/api/carts/{{user.cartId}}/purchase">Finalizar compra</a>
+        {{else}}
+            <p>No tenes un carrito asociado a tu perfil</p>
+    {{/if}}
+
+    {{!-- <section>
         <h2>Agregar producto al carrito</h2>
         <form id="addtocart">
             <label for="cartid">ID del carrito</label>
@@ -22,7 +29,7 @@
             <input type="text" id="productid" name="productid" required>
             <button type="submit">Agregar</button>
         </form>
-    </section>
+    </section> --}}
 
     {{else}}
     <h1>Usted no ha iniciado la sesion...</h1>
@@ -36,4 +43,3 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/useraddtocart.js"></script>

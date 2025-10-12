@@ -1,4 +1,5 @@
 import { createProduct, deleteProductById, getProductById, getProductsService, updateProduct } from "../service/products.service.js";
+import { logger } from "../config/logger.js";
 
 //GET
 export const getProductsController = async (req,res) => {
@@ -12,7 +13,7 @@ export const getProductsController = async (req,res) => {
         }
         res.send({ status: "Success", payload: productsData })
     } catch (error) {
-        console.log(error);
+        logger.error(`Controller: No se pudo obtener los productos. - ${error}`)
     }
 }
 
@@ -29,7 +30,7 @@ export const getProductByIdController = async (req,res) => {
         }
         res.send({ status: "Success", payload: productDataWithId })
     } catch (error) {
-        console.log("Controller: No se pudo conectar con Moongose: " + error);
+        logger.error("Controller: No se pudo conectar con Moongose: " + error);
     }
 }
 
@@ -42,7 +43,7 @@ export const createProductController = async (req,res) => {
             product: newProduct,
         });
     } catch (error) {
-        console.error("Controller: No se pudo crear: " + error);
+        logger.error("Controller: No se pudo crear: " + error);
         return res.status(500).json({ error: "Controller: Error al crear el producto" });
     }
 }
@@ -58,7 +59,7 @@ export const updateProductWithIdController = async (req,res) => {
         const updatedFilm = await updateProduct(pid,updateData)
         res.status(200).send({message: "Controller: Producto actualizado con éxito", product: updatedFilm})
     } catch (error) {
-        console.error("Controller: No se pudo actualizar: " + error);
+        logger.error("Controller: No se pudo actualizar: " + error);
         return res.status(500).json({error: "Controller: Error al actualizar el producto"})
     }
 }
@@ -73,7 +74,7 @@ export const deleteProductWithIdController = async (req,res) => {
         const deletedFilm = await deleteProductById(pid)
         return res.status(200).json({ message: "Controller: Producto eliminado con éxito", product: deletedFilm });
     } catch (error) {
-        console.error("Controller: Error al eliminar producto:", error);
+        logger.error("Controller: Error al eliminar producto:", error);
     return res.status(500).json({ error: "Controller: Error del servidor al eliminar el producto" });
     }
 }

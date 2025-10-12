@@ -30,6 +30,5 @@ add2cart.addEventListener('submit', async (e) => {
         add2cart.reset();
     } catch (error) {
         console.log(error);
-        
     }
 })

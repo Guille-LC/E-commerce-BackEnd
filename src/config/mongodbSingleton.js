@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import config from "./config.js";
+import { logger } from "./logger.js";
 
 export default class MongoDBSingleton {
 
@@ -13,18 +14,17 @@ export default class MongoDBSingleton {
         if(!this.#instance) {
             this.#instance = new MongoDBSingleton()
         } else {
-            console.warn("Ya existe una instancia de Singleton!");
+            logger.warn("Ya existe una instancia de Singleton!");
             return this.#instance
         }
     }
 
     #connectMongoDB= async() => {
         try {
-            console.log('DB: ', config.mongoUrl);
             await mongoose.connect(config.mongoUrl);
-            console.log("Singleton: ¡Conectado a la base de datos de Mongo!");
+            logger.info("Singleton: ¡Conectado a la base de datos de Mongo!");
         } catch (error) {
-            console.error(`No se pudo conectar a la base de datos: ${error}`);
+            logger.error(`No se pudo conectar a la base de datos: ${error}`);
             process.exit()
         }
     }

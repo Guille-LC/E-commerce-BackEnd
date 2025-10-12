@@ -23,6 +23,7 @@ import passport from 'passport'
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import MongoDBSingleton from './config/mongodbSingleton.js'
+import { addLogger } from './config/logger.js'
 
 dotenv.config();
 
@@ -57,6 +58,12 @@ app.use(session({
   resave:true,
   saveUninitialized:true
 }))
+
+//Winston logger
+app.use(addLogger)
+app.get('/testlogger', (req,res) => {
+  res.send("Test logger")
+})
 
 //Passport
 initializePassport()

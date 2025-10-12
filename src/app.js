@@ -21,7 +21,6 @@ import initializePassport from './config/passport.config.js'
 import passport from 'passport'
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import config from './config/config.js'
 import MongoDBSingleton from './config/mongodbSingleton.js'
 
 dotenv.config();

@@ -15,7 +15,7 @@
 
     {{#if user.cartId}}
         <p>ID de tu Carrito: <span>{{user.cartId}}</span></p>
-        <a href="/api/carts/{{user.cartId}}/purchase">Finalizar compra</a>
+        <a href="/views/users/purchase">Finalizar compra</a>
         {{else}}
             <p>No tenes un carrito asociado a tu perfil</p>
     {{/if}}

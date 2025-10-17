@@ -1,10 +1,9 @@
 import { Router } from "express";
-const router = Router()
 import {__dirname} from "../utils.js";
 import { cartModel } from "../models/carritos.models.js";
 import { filmsModel } from "../models/products.models.js";
+const router = Router()
 
-//POST
 router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     let {cartId,productId} = req.params;
 
@@ -27,7 +26,10 @@ router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
 
     if (!carts.products) carts.products = [];
 
-    const existing = carts.products.find(p => p.productId === productId);
+    const existing = carts.products.find(p => {
+        const pid = p.productId._id ? p.productId._id.toString() : p.productId.toString();
+        return pid === productId.toString();
+    });
     if (existing) {
         existing.quantity++;
     } else {
@@ -52,9 +54,11 @@ router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
 
 router.post("/carts/:cid/purchase", async (req,res) => {
     try {
-        const {cid} = req.params;
+        /* const {cid} = req.params;
         const {email} = req.body;
+        
         const cart = await cartModel.findById(cid);
+        
         if(!cart) return res.status(400).send({ status: "Error", message: `No existe carrito con el ID: ${cid}` });
         if(!email) return res.status(400).send({ status: "Error", message: "Debe enviar un email en el body" });
         if(!cart.products.length || cart.products.length === 0) return res.status(400).send({ status: "Error", message: "El carrito está vacío" });
@@ -102,7 +106,7 @@ router.post("/carts/:cid/purchase", async (req,res) => {
             status: failedProducts.length > 0 ? "Partial" : "Success",
             ticket: newTicket,
             failedProducts
-        });
+        }); */
     } catch (error) {
         console.log(error);
     }

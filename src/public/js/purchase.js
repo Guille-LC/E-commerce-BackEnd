@@ -1,11 +1,10 @@
-console.log("Estoy?");
 const purchaseForm = document.getElementById('purchasecart'); 
 
 purchaseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const email = purchaseForm.email.value;
-    const cartId = purchaseForm.dataset.value;
+    const cartId = purchaseForm.dataset.cartId;
 
     try {
         const response = await fetch(`/api/carts/${cartId}/purchase`,{
@@ -21,7 +20,6 @@ purchaseForm.addEventListener('submit', async (e) => {
         } else {
             alert('Error al confirmar la compra')
         }
-
     } catch (error) {
         console.log(error);
     }

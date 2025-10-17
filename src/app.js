@@ -107,7 +107,7 @@ app.get('/home', async (req,res) => {
 
 //Rutas & endpoints para POSTMAN
 app.use("/api", productsRouter)
-app.use("/api/carts", cartsRouter)
+app.use("/api/carts", cartsRouter) // Endpoint para el fetch
 app.use("/api", addToCart)
 
 //Login & Register

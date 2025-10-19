@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required:true
     },
+    pets: { type: Array, default: [] },
     password: String,
     loggedBy: String
 })

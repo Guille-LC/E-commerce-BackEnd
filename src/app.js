@@ -112,8 +112,8 @@ app.use("/api", addToCart)
 app.use("/views/users", userViewsRouter)
 app.use("/api/sessions", sessionRouter)
 
-//Mock
-app.use("/api/mockusers", mockFakerRouter)
+//Mocks
+app.use("/api/mocks", mockFakerRouter)
 
 //Cookies
 app.use("/", cookiesRouter)

@@ -14,7 +14,7 @@ export const createCartService = async(cartData) => {
     return await cartsModel.createNewCart(cartData)
 }
 
-export const purchaseService = async() => {
+export const purchaseService = async(cid) => {
     return await cartsModel.purchaseCart(cid)
 }
 

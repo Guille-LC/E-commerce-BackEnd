@@ -18,7 +18,7 @@ export default class CartsDAO {
     }
 
     async updateCart(cartId,updateCart) {
-        return await cartModel.findByIdAndUpdatete(
+        return await cartModel.findByIdAndUpdate(
             cartId,
             updateCart,
             {new: true}

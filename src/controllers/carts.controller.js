@@ -1,5 +1,7 @@
 import { createCartService, deleteCartService, getCartByIdService, getCartsService, purchaseService, updateCartService } from "../service/carts.service.js";
-import { cartModel } from "../models/carritos.models.js";
+import { filmsModel } from "../models/products.models.js";
+import {ticketModel} from "../models/tickets.models.js";
+import { v4 as uuidv4 } from 'uuid';
 
 //GET
 export const getCartsController = async (req,res) => {
@@ -69,6 +71,7 @@ export const purchaseController = async (req,res) => {
     try {
         const {cid} = req.params;
         const {email} = req.body;
+        console.log("Id del carrito en el controller:", cid);
         
         const cart = await purchaseService(cid)
         

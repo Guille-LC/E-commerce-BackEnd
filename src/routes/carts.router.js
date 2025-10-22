@@ -11,10 +11,10 @@ router.get("/getcart/:cartId", getCartByIdController)
 //POST
 router.post("/createCart", createCartController)
 
+router.post("/:cid/purchase", purchaseController)
+
 //PUT
 router.put("/:cartId", updateCartController)
-
-router.post("/:cid/purchase", purchaseController)
 
 //DELETE
 router.delete("/:cartId", deleteCartController)

@@ -1,0 +1,43 @@
+paths:
+  /api/:
+    get:  
+      summary: Todos los productos
+      tags:
+        - Productos
+      responses:
+        '200':
+          description: Se reciben todos los productos
+        '500':
+          description: Controller No se pudo obtener los productos.
+components: 
+  schemas: 
+    products: 
+      type: object
+      properties: 
+        _id: 
+          type: ObjectId
+          description: ID generado automaticamente por Mongo
+        title:
+          type: String
+          description: Titulo del film
+        description:
+          type: String
+          description: Descripcion del film
+        code:
+          type: String
+          description: Codigo de producto
+        price:
+          type: Number
+          description: Precio del producto
+        status:
+          type: Boolean
+          description: Disponibilidad
+        stock:
+          type: Number
+          description: Cantidad en stock
+        category:
+          type: String
+          description: Categoria del film
+        thumbnails:
+          type: String
+          description: Poster del film

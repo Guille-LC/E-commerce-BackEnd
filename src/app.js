@@ -24,6 +24,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import MongoDBSingleton from './config/mongodbSingleton.js'
 import { addLogger } from './config/logger.js'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUIExpress from 'swagger-ui-express'
 
 dotenv.config();
 
@@ -31,6 +33,21 @@ const app = express();
 const PORT = 8080;
 
 app.use(cookieParser())
+
+//Swagger
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Documentacion de API',
+      description: 'Ecommerce Backend'
+    }
+  },
+  apis: ['./src/docs/**/*.yaml']
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUIExpress.serve,swaggerUIExpress.setup(specs))
 
 //Ruta para la base de datos
 const pathDB = process.env.MONGO_URL;

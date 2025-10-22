@@ -119,7 +119,7 @@ export const purchaseController = async (req,res) => {
                 }));
             await cart.save();
         res.send({
-            status: failedProducts.length > 0 ? "Partial" : "Success",
+            status: "Success",
             ticket: newTicket,
             failedProducts
         });

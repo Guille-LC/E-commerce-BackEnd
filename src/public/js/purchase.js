@@ -4,18 +4,18 @@ purchaseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const email = purchaseForm.email.value;
-    const cartId = purchaseForm.dataset.cartId;
-    console.log("este es el id del carrito en el script de purchase que va a confirmar la compra: ",cartId);
+    const cartId = purchaseForm.dataset;
     
     try {
-        const response = await fetch(`/api/carts/68e2f5ee3fc2cb85c04ea639/purchase`,{
+        const response = await fetch(`/api/carts/${cartId}/purchase`,{
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ email })
         });
         
         const result = await response.json();
-
+        console.log(result);
+        
         if(result.status === "Success") {
             alert('Compra realizada con exito')
         } else {

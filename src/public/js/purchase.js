@@ -4,7 +4,7 @@ purchaseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const email = purchaseForm.email.value;
-    const cartId = purchaseForm.dataset;
+    const cartId = purchaseForm.dataset.cartId;
     
     try {
         const response = await fetch(`/api/carts/${cartId}/purchase`,{
@@ -17,9 +17,16 @@ purchaseForm.addEventListener('submit', async (e) => {
         console.log(result);
         
         if(result.status === "Success") {
-            alert('Compra realizada con exito')
+            Swal.fire({
+                title: "¡Compra realizada con exito!",
+                icon: "success"
+            });
         } else {
-            alert('Error al confirmar la compra')
+            Swal.fire({
+                icon: "error",
+                title: "No se pudo realizar la compra...",
+                text: "¡Algo salio mal!"
+            });
         }
     } catch (error) {
         console.log(error);

@@ -71,8 +71,6 @@ export const purchaseController = async (req,res) => {
     try {
         const {cid} = req.params;
         const {email} = req.body;
-        console.log("Id del carrito en el controller:", cid);
-        
         const cart = await purchaseService(cid)
         
         if(!cart) return res.status(400).send({ status: "Error", message: `No existe carrito con el ID: ${cid}` });
@@ -107,17 +105,22 @@ export const purchaseController = async (req,res) => {
             }
         }
         const newTicket = await ticketModel.create({
-                code: uuidv4(),
-                purchase_datetime: new Date(),
-                amount,
-                purchaser: email,
-                products: purchasedProducts
-            });
-            cart.products = failedProducts.map(fp => ({
-                productId: fp.productId,
-                quantity: fp.requestedQty
-                }));
-            await cart.save();
+            code: uuidv4(),
+            purchase_datetime: new Date(),
+            amount,
+            purchaser: email,
+            products: purchasedProducts
+        });
+        cart.products = failedProducts.map(fp => ({
+            productId: fp.productId,
+            quantity: fp.requestedQty
+            }));
+        
+        if(failedProducts.length >= 1 && purchasedProducts.length === 0) {
+            return res.status(400).send({ status: "Error", message: "Estos productos no tienen stock" });
+        }
+
+        await cart.save();
         res.send({
             status: "Success",
             ticket: newTicket,

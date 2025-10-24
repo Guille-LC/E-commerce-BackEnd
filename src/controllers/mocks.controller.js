@@ -1,3 +1,4 @@
+import { logger } from "../config/logger.js";
 import { generateMockUser,generateMockPet } from "../fackermocks.js";
 import { petModel } from "../models/pets.models.js";
 import { userModel } from "../models/user.models.js";
@@ -10,7 +11,7 @@ export const mocksController = async (req,res) => {
             }
             res.send({status: "Success", payload: mockUsersArray})
         } catch (error) {
-            console.log(error);
+            logger.error(error)
             res.status(500).send({ status: "error", message: "Error generando mocks" });
         }
 }
@@ -39,7 +40,7 @@ export const generateDataController = async (req,res) => {
             message: `Se generaron ${users} usuarios y ${pets} mascotas correctamente`
         });
     } catch (error) {
-        console.log(error);
+        logger.error(error)
         res.status(500).send({ status: "Error", message: "Error generando data mock" });
     }
 }

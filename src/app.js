@@ -23,7 +23,7 @@ import passport from 'passport'
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import MongoDBSingleton from './config/mongodbSingleton.js'
-import { addLogger } from './config/logger.js'
+import { addLogger, logger } from './config/logger.js'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUIExpress from 'swagger-ui-express'
 
@@ -102,6 +102,7 @@ app.get('/realTimeProducts', async (req,res) => {
 
     result.isValid = !(page <= 0 || page > result.totalPages)
 
+    logger.info("Productos renderizados")
     res.render("realTimeProducts", {
       style: 'main.css',
       products: result.docs,
@@ -115,6 +116,7 @@ app.get('/realTimeProducts', async (req,res) => {
 
 app.get('/home', async (req,res) => {
   const carritos = await cartModel.find();
+  logger.info("Carritos renderizados")
   res.render("home", {
     style: "main.css",
     carritos})
@@ -135,7 +137,7 @@ app.use("/api/mocks", mockFakerRouter)
 //Cookies
 app.use("/", cookiesRouter)
 
-const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
+const httpServer = app.listen(PORT, ()=> logger.http(`Server on port: ${PORT}`));
 
 //Socket
 const socketServer = new Server(httpServer);
@@ -152,11 +154,11 @@ socketServer.on('connection', socket => {
       await guardarArchivos(productos);
       socketServer.emit('actualizarProductos', productos);
     } catch (error) {
-      console.log("Error: ", error);
+      logger.error(error)
     }
   })
 
-  socket.on('mensaje',data => console.log("Data: ", data))
+  socket.on('mensaje',data => logger.info(`Data =>` + data))
   socket.emit("msj2", "Soy el backend")
   socket.emit("msj3", "Soy el backend")
 })
@@ -164,8 +166,9 @@ socketServer.on('connection', socket => {
 const mongoInstance = async() => {
   try {
     await MongoDBSingleton.getInstance()
+    logger.http("Instancia de Mongo inicializada")
   } catch (error) {
-    console.error(error);
+    logger.error(error)
   }
 }
 mongoInstance()

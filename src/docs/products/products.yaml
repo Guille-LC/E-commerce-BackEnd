@@ -9,6 +9,69 @@ paths:
           description: Se reciben todos los productos
         '500':
           description: Controller No se pudo obtener los productos.
+  /api/{pid}:
+    get:  
+      summary: El producto por ID
+      tags:
+        - Productos
+      parameters: 
+        - name: pid
+          required: true
+          in: path
+          description: ID del producto alojado en la base de datos
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Se recibe el producto por su ID
+        '500':
+          description: Controller No se encontro el producto por ID.
+    put:  
+      summary: Actualiza un producto por ID
+      tags:
+        - Productos
+      parameters: 
+        - name: pid
+          required: true
+          in: path
+          description: ID del producto alojado en la base de datos
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: Controller Producto actualizado con éxito
+        '404':
+          description: Controller No se encontro el producto con el ID:${pid}
+        '500':
+          description: Controller Error al actualizar el producto
+    delete:  
+      summary: Elimina un producto por ID
+      tags:
+        - Productos
+      parameters: 
+        - name: pid
+          required: true
+          in: path
+          description: ID del producto alojado en la base de datos
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: "Controller: Producto eliminado con éxito"
+        '404':
+          description: Controller No se encontro el producto con el ID:${pid}
+        '500':
+          description: "Controller: Error del servidor al eliminar el producto"
+  /api/create:
+    post:  
+      summary: Crear un producto
+      tags:
+        - Productos
+      responses:
+        '201':
+          description: Controller Producto creado con éxito
+        '500':
+          description: Controller Error al crear el producto
 components: 
   schemas: 
     products: 
@@ -18,26 +81,36 @@ components:
           type: ObjectId
           description: ID generado automaticamente por Mongo
         title:
-          type: String
+          type: string
           description: Titulo del film
         description:
-          type: String
+          type: string
           description: Descripcion del film
         code:
-          type: String
+          type: string
           description: Codigo de producto
         price:
-          type: Number
+          type: number
           description: Precio del producto
         status:
-          type: Boolean
+          type: boolean
           description: Disponibilidad
         stock:
-          type: Number
+          type: number
           description: Cantidad en stock
         category:
-          type: String
+          type: string
           description: Categoria del film
         thumbnails:
-          type: String
+          type: string
           description: Poster del film
+      example: 
+        _id: 64d2f3a9b1c4e5f6a7b8c9d0
+        title: Hot Fuzz
+        description: Hot Fuzz es una comedia de acción británica donde un policía demasiado eficiente es trasladado a un tranquilo pueblo que esconde un oscuro ysangriento secreto.
+        code: aaa
+        price: 3500
+        status: true
+        stock: 12
+        category: Accion
+        thumbnails: https://m.media-amazon.com/images/I/71M6PLW0yxL.jpg

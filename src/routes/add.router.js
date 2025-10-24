@@ -1,15 +1,12 @@
 import { Router } from "express";
 const router = Router()
-import {__dirname,guardarCarrito} from "../utils.js";
+import {__dirname} from "../utils.js";
 import { cartModel } from "../models/carritos.models.js";
 import { filmsModel } from "../models/products.models.js";
-import { updateCartController } from "../controllers/carts.controller.js";
 
 //POST
 router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     let {cartId,productId} = req.params;
-    /* cartId = parseInt(cartId);
-    productId = parseInt(productId); */
 
     const carts = await cartModel.findById(cartId)
     const product = await filmsModel.findById(productId);

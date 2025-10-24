@@ -13,16 +13,12 @@
     <p>{{user.role}}</p>
     <br>
 
-    <section>
-        <h2>Agregar producto al carrito</h2>
-        <form id="addtocart">
-            <label for="cartid">ID del carrito</label>
-            <input type="text" id="cartid" name="cartid" required>
-            <label for="productid">ID del producto</label>
-            <input type="text" id="productid" name="productid" required>
-            <button type="submit">Agregar</button>
-        </form>
-    </section>
+    {{#if user.cartId}}
+        <p>ID de tu Carrito: <span>{{user.cartId}}</span></p>
+        <a href="/views/users/purchase">Finalizar compra</a>
+        {{else}}
+            <p>No tenes un carrito asociado a tu perfil</p>
+    {{/if}}
 
     {{else}}
     <h1>Usted no ha iniciado la sesion...</h1>

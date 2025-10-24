@@ -22,6 +22,7 @@ import passport from 'passport'
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import MongoDBSingleton from './config/mongodbSingleton.js'
+import nodemailer from 'nodemailer'
 
 dotenv.config();
 
@@ -44,6 +45,37 @@ app.engine('handlebars', exphbs.engine({
 }));
 app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
+
+//Nodemailer
+const transport = nodemailer.createTransport({
+  service: 'gmail',
+  port: 587,
+  auth: {
+    user: process.env.ADMIN_GMAIL,
+    pass: process.env.GMAIL_APP_PASS
+  }
+})
+
+app.get('/mail', async (req,res) => {
+  try {
+    let result = await transport.sendMail({
+      from: 'Coder test',
+      to: process.env.ADMIN_GMAIL,
+      subject: 'Correo de prueba',
+      html: `
+        <h1>Correo de prueba</h1>
+      `,
+      attachments: [{
+        filename: 'tumblr_2e4a0089e511b8bdff1c7dd48569489c_03d91c8e_540.webp',
+        path:__dirname + '/public/img/tumblr_2e4a0089e511b8bdff1c7dd48569489c_03d91c8e_540.webp',
+        cid: 'lightbikes'
+      }]
+    })
+  res.send({status: "Success", payload: result})
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 //Session Storage
 app.use(session({

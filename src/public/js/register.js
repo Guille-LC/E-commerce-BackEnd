@@ -1,3 +1,4 @@
+import { logger } from "../../config/logger";
 
 const form = document.getElementById("registerForm");
 
@@ -16,6 +17,7 @@ form.addEventListener("submit", e => {
         }
     }).then(result => {
         if(result.status === 200) {
+            logger.info(`register.js => Usuario registrado`)
             Swal.fire({
                 title: "¡Usuario registrado!",
                 icon: "success"
@@ -24,13 +26,14 @@ form.addEventListener("submit", e => {
                 window.location.replace("/views/users/login")
             }, 2000)
         } else {
+            logger.error(`register.js => No se pudo registrar, ele usuario ya existe.`)
             Swal.fire({
             icon: "error",
             title: "NO SE PUDO REGISTRAR",
             text: "¡El usuario ya existe!"
             });
         }
-    }).catch(err => { 
-        console.log(err);
+    }).catch(error => { 
+        logger.error(`Algo salio mal: ${error}`)
     })
 })

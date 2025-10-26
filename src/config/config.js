@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { Command } from 'commander'
+import { logger } from './logger';
 
 const program = new Command();
 
@@ -8,10 +9,11 @@ program.option('-m, --Mode <mode>', 'Mode to run the application', 'dev')
         .option('-d --DEBUG <debug>', 'Debug mode', false)
 program.parse();
 
-console.log('program.option()', program.opts());
+logger.info('program.option()', program.opts())
 
 const enviroment = program.opts().Mode
-console.log('enviroment: ', enviroment);
+
+logger.info('enviroment: ', enviroment)
 
 dotenv.config({
     path: enviroment === 'dev' ? './src/config/.env.development' : '.env.production'

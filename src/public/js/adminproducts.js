@@ -1,3 +1,5 @@
+import { logger } from "../../config/logger";
+
 const socket = io();
 
 const form = document.getElementById('formCrearProducto');
@@ -18,7 +20,7 @@ form.addEventListener('submit', async (e) => {
 
     socket.emit('nuevoProducto', nuevoProducto);
 
-    console.log(nuevoProducto);
+    logger.warn(nuevoProducto)
 
     try {
             const res = await fetch(`/api/create`,{
@@ -33,7 +35,7 @@ form.addEventListener('submit', async (e) => {
 
         const data = await res.json();
 
-        console.log("Respuesta del servidor:", data);
+        logger.info(`Respuesta del servidor: ${data}`);
 
         Swal.fire({
         title: "¡Producto creado!",
@@ -43,7 +45,7 @@ form.addEventListener('submit', async (e) => {
         
         form.reset();
     } catch(error) {
-        console.error("Error al crear producto:", error);
+        logger.error(`Error al crear producto: ${error}`)
         Swal.fire({
             title: "Error",
             text: "No se pudo crear el producto",
@@ -60,6 +62,7 @@ deleteForm.addEventListener('submit', async (e) => {
     const id = document.getElementById('id').value.trim();
 
     if(!id) {
+        logger.warn('ID invalido')
         Swal.fire({
             title: "Error",
             text: "Debe ingresar un ID válido",
@@ -76,7 +79,7 @@ deleteForm.addEventListener('submit', async (e) => {
         if(!res.ok)  throw new Error(`Error HTTP: ${res.status}`);
 
         const data = await res.json()
-        console.log(data);
+        logger.info(data)
         Swal.fire({
             title: "¡Producto eliminado!",
             text: `(ID: ${id})`,
@@ -85,7 +88,7 @@ deleteForm.addEventListener('submit', async (e) => {
 
         deleteForm.reset();
     } catch (error) {
-        console.error("Error al eliminar producto:", error);
+        logger.error(`Error al eliminar producto: ${error}`)
         Swal.fire({
             title: "Error",
             text: "No se pudo eliminar el producto",

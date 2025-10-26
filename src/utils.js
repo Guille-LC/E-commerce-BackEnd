@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from 'passport';
+import { logger } from './config/logger';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -24,11 +25,13 @@ export const generateToken = user => {
 export const authToken = (req,res,next) => {
     const token = req.cookies.jwtCookieToken;
     if (!token) {
+        logger.error('Utils.js: authToken => token => Token inexistente')
         return res.status(401).send({ error: "Token missing" });
     }
     
     jwt.verify(token,PRIVATE_KEY,(err, credentials) => {
         if(err) {
+            logger.error('Utils.js: authToken => jwt verify => Token invalido')
             return res.status(403).send({error: 'Token invalido'})
         }
 
@@ -42,7 +45,7 @@ export const authToken = (req,res,next) => {
 export const passportCallback = strategy => {
     return async(req,res, next) => {
         passport.authenticate(strategy,function(error,user,info) {
-            if(error) return next(error)
+            if(error) return next(error), logger.error('Utils.js => passportCallback => Ocurrio un error.')
             if(!user) return res.status(401).send({error: info.message ? info.message : info.toString()})
             req.user = user;
             next()
@@ -54,9 +57,11 @@ export const passportCallback = strategy => {
 export const authorization = role => {
     return async (req,res,next) => {
         if(!req.user) {
+            logger.warn('Utils.js => authorization => Usuario no autenticado con JWT.')
             return res.status(401).send('Usuario no autenticado con JWT.')
         }
         if(req.user.user.role !== role) {
+            logger.error('Utils.js => authorization => Usuario no autorizado.')
             return res.status(403).send('Usuario no autorizado.')
         }
         next()

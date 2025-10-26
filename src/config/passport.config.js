@@ -144,6 +144,7 @@ const initializePassport = () => {
 const cookieExtractor = req => {
     let token = null;
     if (req && req.cookies) {
+        logger.info('Se obtuvo la jwtCokkieToken')
         token = req.cookies['jwtCookieToken']
     }
     return token

@@ -3,6 +3,7 @@ const router = Router()
 import {__dirname} from "../utils.js";
 import { cartModel } from "../models/carritos.models.js";
 import { filmsModel } from "../models/products.models.js";
+import { logger } from "../config/logger.js";
 
 //POST
 router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
@@ -12,6 +13,7 @@ router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     const product = await filmsModel.findById(productId);
 
     if (!carts) {
+        logger.warn(`No existe carrito con id ${cartId}`)
         return res.status(404).send({
             status: "Error",
             message: `No existe carrito con id ${cartId}`
@@ -19,6 +21,7 @@ router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     }
 
     if (!product) {
+        logger.warn(`No existe producto con id ${productId}`)
         return res.status(404).send({
             status: "Error",
             message: `No existe producto con id ${productId}`
@@ -37,12 +40,14 @@ router.post("/addToCart/:cartId/products/:productId", async (req,res) => {
     const exito = await carts.save();
 
     if (exito) {
+        logger.info(`Producto ${productId} agregado al carrito ${cartId}`)
         res.send({
             status: "Success",
             message: `Producto ${productId} agregado al carrito ${cartId}`,
             payload: carts
         });
     } else {
+        logger.warn(`No se pudo guardar el carrito.`)
         res.status(500).send({
             status: "Error",
             message: "No se pudo guardar el carrito."

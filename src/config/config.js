@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { Command } from 'commander'
-import { logger } from './logger';
+import { logger } from './logger.js';
 import { __dirname } from '../utils.js';
 import path from "path";
 

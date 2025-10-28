@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
-dotenv.config();
 import nodemailer from 'nodemailer'
 import { __dirname } from '../utils.js';
 import { Router } from "express";
+import twilio from 'twilio'
 const router = Router()
+dotenv.config();
 
 console.log(process.env.ADMIN_GMAIL);
 console.log(process.env.GMAIL_APP_PASS);

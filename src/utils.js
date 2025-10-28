@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from 'passport';
-import { logger } from './config/logger';
+import { logger } from './config/logger.js';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)

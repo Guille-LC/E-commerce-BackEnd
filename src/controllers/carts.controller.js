@@ -1,4 +1,3 @@
-import { createCartService, deleteCartService, getCartByIdService, getCartsService, updateCartService } from "../service/carts.service.js";
 import { logger } from "../config/logger.js";
 import { createCartService, deleteCartService, getCartByIdService, getCartsService, purchaseService, updateCartService } from "../service/carts.service.js";
 import { filmsModel } from "../models/products.models.js";

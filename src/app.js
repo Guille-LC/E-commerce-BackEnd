@@ -27,7 +27,6 @@ import MongoDBSingleton from './config/mongodbSingleton.js'
 import { addLogger, logger } from './config/logger.js'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUIExpress from 'swagger-ui-express'
-import twilio from 'twilio'
 
 dotenv.config();
 

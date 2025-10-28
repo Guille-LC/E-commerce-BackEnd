@@ -4,6 +4,7 @@ import jwtStrategy from 'passport-jwt';
 import { PRIVATE_KEY } from "../utils.js";
 import { isValidPassword,createHash } from "../utils.js";
 import { userModel } from "../models/user.models.js";
+import { cartModel } from "../models/carritos.models.js";
 import GithubStrategy from 'passport-github2';
 import dotenv from 'dotenv'
 import { logger } from "./logger.js";
@@ -76,13 +77,19 @@ const initializePassport = () => {
                         logger.warn("Este usuario ya existe")
                         return done(null,false)
                     }
+                    let cartId = null;
+                    if(role === 'user') {
+                        const newCart = await cartModel.create({ products: [] });
+                        cartId = newCart._id;
+                    }
                     let userDTO = {
                         name,
                         age,
                         email,
                         role,
                         password: createHash(password),
-                        loggedBy: `Passport Local`
+                        loggedBy: `Passport Local`,
+                        cartId
                     }
                     const result = await userModel.create(userDTO)
                     logger.info(`Resultado del registro: ${result}`)

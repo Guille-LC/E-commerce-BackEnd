@@ -10,6 +10,7 @@ import cartsRouter from './routes/carts.router.js'
 import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
 import cookiesRouter from './routes/cookies.router.js'
+import mailingRouter from './routes/mailing.router.js'
 import { __dirname, guardarArchivos, generarIdUnico } from './utils.js'
 import { filmsModel } from './models/products.models.js'
 import { cartModel } from './models/carritos.models.js'
@@ -26,6 +27,7 @@ import MongoDBSingleton from './config/mongodbSingleton.js'
 import { addLogger, logger } from './config/logger.js'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUIExpress from 'swagger-ui-express'
+import twilio from 'twilio'
 
 dotenv.config();
 
@@ -63,6 +65,9 @@ app.engine('handlebars', exphbs.engine({
 }));
 app.set('views', __dirname + "/views/");
 app.set('view engine', 'handlebars');
+
+//Mailing
+app.use("/mailing", mailingRouter)
 
 //Session Storage
 app.use(session({

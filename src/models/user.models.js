@@ -11,11 +11,15 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        required:true
+        default: "user",
+        required: true
     },
     pets: { type: Array, default: [] },
     password: String,
-    loggedBy: String
+    loggedBy: String,
+    cartId: { 
+        type: mongoose.Schema.Types.ObjectId, ref: "carritos" 
+    }
 })
 
 export const userModel = mongoose.model(usersCollection,userSchema)

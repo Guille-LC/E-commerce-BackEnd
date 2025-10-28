@@ -14,6 +14,10 @@ export const createCartService = async(cartData) => {
     return await cartsModel.createNewCart(cartData)
 }
 
+export const purchaseService = async(cid) => {
+    return await cartsModel.purchaseCart(cid)
+}
+
 export const updateCartService = async(cartId,updateCart) => {
     return await cartsModel.updateCart(cartId,updateCart)
 }

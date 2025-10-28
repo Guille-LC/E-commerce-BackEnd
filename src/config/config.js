@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import { Command } from 'commander'
 import { logger } from './logger';
+import { __dirname } from '../utils.js';
+import path from "path";
 
 const program = new Command();
 
@@ -16,11 +18,15 @@ const enviroment = program.opts().Mode
 logger.info('enviroment: ', enviroment)
 
 dotenv.config({
-    path: enviroment === 'dev' ? './src/config/.env.development' : '.env.production'
+    path: enviroment === 'dev' 
+    ? path.resolve(__dirname, ".env.development")
+    : path.resolve(__dirname, ".env.production")
 })
 
 export default {
     port: process.env.PORT,
     mongoUrl: process.env.MONGO_URL,
-    adminName: process.env.ADMIN_NAME
+    adminName: process.env.ADMIN_NAME,
+    adminGmail: process.env.ADMIN_GMAIL,
+    gmailAppPass: process.env.GMAIL_APP_PASS
 }

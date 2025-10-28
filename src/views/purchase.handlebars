@@ -1,0 +1,30 @@
+<h1>Finalizar compra</h1>
+
+<p>Email: {{user.email}}</p>
+<p>Cart ID: {{user.cartId}}</p>
+
+<section>
+    <h2>Tu carrito</h2>
+    {{#if cart.products.length}}
+        <ul>
+            {{#each cart.products}}
+                <li>
+                    <strong>{{this.productId.title}}</strong> <br>
+                    Cantidad: {{this.quantity}} <br>
+                    Precio unitario: ${{this.productId.price}} <br>
+                    Stock disponible: {{this.productId.stock}}
+                </li>
+            {{/each}}
+        </ul>
+        {{else}} 
+            <h3>Tu carrito esta vacio...</h3>
+    {{/if}}
+</section>
+
+<form id="purchasecart" data-cart-id="{{user.cartId}}">
+    <input type="hidden" name="email" value="{{user.email}}">
+    <button type="submit">Confirmar compra</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/purchase.js"></script>

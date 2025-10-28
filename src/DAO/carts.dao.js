@@ -13,8 +13,12 @@ export default class CartsDAO {
         return await cartModel.create(cartData)
     }
 
+    async purchaseCart(cid) {
+        return await cartModel.findByIdAndUpdate(cid)
+    }
+
     async updateCart(cartId,updateCart) {
-        return await cartModel.updafindByIdAndUpdateteOne(
+        return await cartModel.findByIdAndUpdate(
             cartId,
             updateCart,
             {new: true}

@@ -87,7 +87,7 @@ export function generarIdUnico(productos) {
     return id;
 }
 
-export async function leerCarrito() {
+/* export async function leerCarrito() {
     try {
         const cartData = await fs.readFile(rutaCarrito,codeFormat);
         return JSON.parse(cartData)
@@ -125,6 +125,6 @@ export async function guardarCarrito(data) {
         console.error("❌ Error al guardar archivo:", error.message);
         return false;
     }
-}
+} */
 
 export {__dirname};

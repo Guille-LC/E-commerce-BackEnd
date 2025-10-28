@@ -23,9 +23,9 @@
     "socket.io": "^4.8.1",
     "swagger-ui-express": "^5.0.1",
     "sweetalert2": "^11.22.4",
-    "winston": "^3.18.3",
     "twilio": "^5.10.3",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "winston": "^3.18.3"
   },
   "type": "module",
   "name": "ecommerce-backend",
@@ -39,6 +39,8 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "chai": "^6.2.0",
+    "mocha": "^11.7.4",
     "swagger-jsdoc": "^6.2.8"
   }
 }

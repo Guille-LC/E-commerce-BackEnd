@@ -1,0 +1,42 @@
+paths:
+  /api/sessions/github:
+    get:
+      summary:
+      tags:
+        - Sesiones de usuarios
+      responses:
+        '200':
+          description: Usuario registrado con github
+        '500':
+          description: Error al registrar al usuario
+  /api/sessions/githubcallback:
+    get:
+      summary:
+      tags:
+        - Sesiones de usuarios
+      responses:
+        '200':
+          description: Usuario registrado con github
+        '401':
+          description: Error al registrar al usuario
+  /api/sessions/register:
+    post:
+      summary: Registra un usuario
+      tags: 
+        - Sesiones de usuarios
+      responses:
+        '200':
+          description: Usuario registrado
+        '500':
+          description: Error al registrar al usuario
+
+  /api/sessions/login: 
+    post:
+      summary: Loguea un usuario
+      tags: 
+        - Sesiones de usuarios
+      responses:
+        '200':
+          description: Usuario logueado correctamente
+        '401':
+          description: Error al loguear al usuario

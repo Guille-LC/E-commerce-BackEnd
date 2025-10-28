@@ -1,3 +1,5 @@
+import { logger } from "../../config/logger";
+
 const add2cart = document.getElementById('addtocart');
 
 add2cart.addEventListener('submit', async (e) => {
@@ -29,7 +31,6 @@ add2cart.addEventListener('submit', async (e) => {
         });
         add2cart.reset();
     } catch (error) {
-        console.log(error);
-        
+        logger.error(`${error}`)
     }
 })

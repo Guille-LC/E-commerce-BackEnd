@@ -7,6 +7,7 @@ import { userModel } from "../models/user.models.js";
 import { cartModel } from "../models/carritos.models.js";
 import GithubStrategy from 'passport-github2';
 import dotenv from 'dotenv'
+import { logger } from "./logger.js";
 dotenv.config();
 
 const localStrategy = passportLocal.Strategy;
@@ -16,13 +17,17 @@ const ExtractJwt = jwtStrategy.ExtractJwt;
 
 const initializePassport = () => {
 
+    logger.http('Passport inicializado')
+
     passport.use('jwt', new JwtStrategy({
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]), 
         secretOrKey: PRIVATE_KEY
         }, async(jwt_payload,done) => {
             try {
+                logger.info("JwtStrategy")
                 return done(null,jwt_payload)
             } catch (error) {
+                logger.error(error)
                 return done(error)
             }
     }))
@@ -34,8 +39,8 @@ const initializePassport = () => {
         callbackURL: "http://localhost:8080/api/sessions/githubcallback"
     },
     async (accesToken,refreshToken,profile,done) => {
-        console.log(profile);
         try {
+            logger.info('Estrategia de Github inicializada')
             let user = await userModel.findOne({email:profile._json.email})
             if(!user) {
                 let githubDTO = {
@@ -45,10 +50,13 @@ const initializePassport = () => {
                     loggedBy: 'Github'
                 }
                 const result = await userModel.create(githubDTO);
+                logger.info('Resultado de estrategia de Github => ' + result)
                 return done(null,result)
             }
+            logger.info('Resultado de estrategia de Github => ' + user)
             return done(null,user)
         } catch (error) {
+            logger.error(error)
             return done(error)
         }
     }
@@ -62,9 +70,11 @@ const initializePassport = () => {
         },
         async (req, username, isValidPassword, done) => {
             try {
+                logger.info('Registro de usuario')
                 const {name,age,email,role ,password} = req.body;
                 const exists = await userModel.findOne({email})
                     if (exists) {
+                        logger.warn("Este usuario ya existe")
                         return done(null,false)
                     }
                     let cartId = null;
@@ -82,8 +92,10 @@ const initializePassport = () => {
                         cartId
                     }
                     const result = await userModel.create(userDTO)
+                    logger.info(`Resultado del registro: ${result}`)
                     return done(null,result)
             } catch (error) {
+                logger.error(error)
                 return done(error,null)
             }
         },
@@ -96,16 +108,21 @@ const initializePassport = () => {
         },
         async (req,username,password,done) => {
             try {
+                logger.info(`Logueo de usuario`)
                 const {email,password} = req.body;
                 const user = await userModel.findOne({email})
                 if (!user) {
+                    logger.error("Este usuario no esta registrado")
                     return done(null,false)
                 }
                 if (!isValidPassword(user.password, password)) {
+                    logger.warn("La contraseña es incorrecta")
                     return done(null,false)
                 }
+                logger.info(`Resultado del logue: ${user}`)
                 return done(null,user)
             } catch (error) {
+                logger.error(error)
                 return done(error,null)
             }
         }
@@ -113,6 +130,7 @@ const initializePassport = () => {
 
     //Serializar
     passport.serializeUser((user,done) => {
+        logger.info('serializeUser')
         done(null,user._id)
     })
 
@@ -120,8 +138,10 @@ const initializePassport = () => {
     passport.deserializeUser(async (id,done) => {
         try {
             const user = await userModel.findById(id);
+            logger.info('deserializeUser')
             return done(null,user)
         } catch (error) {
+            logger.error(error)
             return done(error,null)
         }
     })
@@ -131,6 +151,7 @@ const initializePassport = () => {
 const cookieExtractor = req => {
     let token = null;
     if (req && req.cookies) {
+        logger.info('Se obtuvo la jwtCokkieToken')
         token = req.cookies['jwtCookieToken']
     }
     return token

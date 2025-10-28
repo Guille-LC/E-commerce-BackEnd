@@ -18,11 +18,15 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import userViewsRouter from './routes/user.views.router.js'
 import sessionRouter from './routes/sessions.router.js'
+import mockFakerRouter from './routes/mock.router.js'
 import initializePassport from './config/passport.config.js'
 import passport from 'passport'
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import MongoDBSingleton from './config/mongodbSingleton.js'
+import { addLogger, logger } from './config/logger.js'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUIExpress from 'swagger-ui-express'
 import twilio from 'twilio'
 
 dotenv.config();
@@ -31,6 +35,21 @@ const app = express();
 const PORT = 8080;
 
 app.use(cookieParser())
+
+//Swagger
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Documentacion de API',
+      description: 'Ecommerce Backend'
+    }
+  },
+  apis: ['./src/docs/**/*.yaml']
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUIExpress.serve,swaggerUIExpress.setup(specs))
 
 //Ruta para la base de datos
 const pathDB = process.env.MONGO_URL;
@@ -62,14 +81,10 @@ app.use(session({
   saveUninitialized:true
 }))
 
-app.get("/session", (req, res) => {
-    if (req.session.counter) {
-        req.session.counter++;
-        res.send(`Se ha visitado el sitio: '${req.session.counter}' veces`)
-    } else {
-        req.session.counter = 1
-        res.send("Bienvenido!!..")
-    }
+//Winston logger
+app.use(addLogger)
+app.get('/testlogger', (req,res) => {
+  res.send("Test logger")
 })
 
 //Passport
@@ -92,6 +107,7 @@ app.get('/realTimeProducts', async (req,res) => {
 
     result.isValid = !(page <= 0 || page > result.totalPages)
 
+    logger.info("Productos renderizados")
     res.render("realTimeProducts", {
       style: 'main.css',
       products: result.docs,
@@ -105,6 +121,7 @@ app.get('/realTimeProducts', async (req,res) => {
 
 app.get('/home', async (req,res) => {
   const carritos = await cartModel.find();
+  logger.info("Carritos renderizados")
   res.render("home", {
     style: "main.css",
     carritos})
@@ -119,10 +136,13 @@ app.use("/api", addToCart)
 app.use("/views/users", userViewsRouter)
 app.use("/api/sessions", sessionRouter)
 
+//Mocks
+app.use("/api/mocks", mockFakerRouter)
+
 //Cookies
 app.use("/", cookiesRouter)
 
-const httpServer = app.listen(PORT, ()=> console.log(`Server on port: ${PORT}`));
+const httpServer = app.listen(PORT, ()=> logger.http(`Server on port: ${PORT}`));
 
 //Socket
 const socketServer = new Server(httpServer);
@@ -139,11 +159,11 @@ socketServer.on('connection', socket => {
       await guardarArchivos(productos);
       socketServer.emit('actualizarProductos', productos);
     } catch (error) {
-      console.log("Error: ", error);
+      logger.error(error)
     }
   })
 
-  socket.on('mensaje',data => console.log("Data: ", data))
+  socket.on('mensaje',data => logger.info(`Data =>` + data))
   socket.emit("msj2", "Soy el backend")
   socket.emit("msj3", "Soy el backend")
 })
@@ -151,8 +171,9 @@ socketServer.on('connection', socket => {
 const mongoInstance = async() => {
   try {
     await MongoDBSingleton.getInstance()
+    logger.http("Instancia de Mongo inicializada")
   } catch (error) {
-    console.error(error);
+    logger.error(error)
   }
 }
 mongoInstance()

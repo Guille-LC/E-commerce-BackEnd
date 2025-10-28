@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
         default: "user",
         required: true
     },
+    pets: { type: Array, default: [] },
     password: String,
     loggedBy: String,
     cartId: { 

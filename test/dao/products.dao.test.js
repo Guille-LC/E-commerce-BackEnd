@@ -1,5 +1,4 @@
 //npx mocha test/dao/products.dao.test.js
-
 import mongoose from "mongoose";
 import ProductsDao from '../../src/DAO/products.dao.js'
 import Assert from 'assert'
@@ -20,7 +19,10 @@ describe('Testing de products DAO', () => {
 
     it('Devolver los productos en Array', async function() {
         const result = await this.productsDao.getAll();
-        assert.strictEqual(Array.isArray(result), true)
+
+        expect(result.to.be.deep.equal([]))
+
+        /* assert.strictEqual(Array.isArray(result), true) */
     })
 
 })

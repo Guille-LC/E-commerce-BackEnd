@@ -128,10 +128,10 @@ app.get('/home', async (req,res) => {
 })
 
 //Rutas & endpoints para POSTMAN
+app.use("/api/users", usersRouter)
 app.use("/api", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api", addToCart)
-app.use("/api/users", usersRouter)
 
 //Login & Register
 app.use("/views/users", userViewsRouter)

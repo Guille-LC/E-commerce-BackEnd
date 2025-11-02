@@ -10,6 +10,10 @@ export const getAllUsersController = async (req,res) => {
                 message:'Controller: No se encontraron usuarios.'
             }))
         }
+        return res.status(200).send({
+            status: "Success",
+            payload: allUsersData
+        });
     } catch (error) {
         logger.error('Controller: No se pudo obtener los usuarios: ' + error)
     }

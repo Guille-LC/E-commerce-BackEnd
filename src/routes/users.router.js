@@ -2,7 +2,7 @@ import { getAllUsersController, getUserByIdController, createUserController } fr
 import { Router } from "express";
 const router = Router();
 
-router.get('/', getAllUsersController)
+router.get('/all', getAllUsersController)
 
 router.get('/:id', getUserByIdController)
 

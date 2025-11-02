@@ -1,13 +1,10 @@
 //npx mocha test/dao/products.dao.test.js
 import mongoose from "mongoose";
 import ProductsDao from '../../src/DAO/products.dao.js'
-import Assert from 'assert'
 import dotenv from "dotenv";
 dotenv.config();
 
 mongoose.connect(process.env.MONGO_URL)
-
-const assert = Assert.strict;
 
 describe('Testing de products DAO', () => {
     before(function() {
@@ -21,8 +18,6 @@ describe('Testing de products DAO', () => {
         const result = await this.productsDao.getAll();
 
         expect(result.to.be.deep.equal([]))
-
-        /* assert.strictEqual(Array.isArray(result), true) */
     })
 
 })

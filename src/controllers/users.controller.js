@@ -1,5 +1,5 @@
-import { logger } from "../config/logger"
-import { getAllUsersService, getUserByIdService } from "../service/users.service";
+import { logger } from "../config/logger.js"
+import { getAllUsersService, getUserByIdService, createUserService } from "../service/users.service.js";
 
 export const getAllUsersController = async (req,res) => {
     try {
@@ -28,5 +28,18 @@ export const getUserByIdController = async (req,res) => {
         res.send({status: "Success", payload: userDataWithId})
     } catch (error) {
         logger.error('Controller: No se pudo obtener el usuario: ' + error)
+    }
+}
+
+export const createUserController = async (req,res) => {
+    try {
+        const newUser = await createUserService(req.body);
+        return res.status(201).json({
+            message: 'Usuario creado con exito',
+            payload: newUser
+        })
+    } catch (error) {
+        logger.error('Controller: No se pude crear el usuario: ' + error);
+        return res.status(500).json({ error: "Controller: Error al crear el usuario" });
     }
 }

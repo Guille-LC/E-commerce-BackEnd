@@ -11,6 +11,7 @@ import productsRouter from './routes/products.router.js'
 import addToCart from './routes/add.router.js'
 import cookiesRouter from './routes/cookies.router.js'
 import mailingRouter from './routes/mailing.router.js'
+import usersRouter from './routes/users.router.js'
 import { __dirname, guardarArchivos, generarIdUnico } from './utils.js'
 import { filmsModel } from './models/products.models.js'
 import { cartModel } from './models/carritos.models.js'
@@ -130,6 +131,7 @@ app.get('/home', async (req,res) => {
 app.use("/api", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api", addToCart)
+app.use("/api/users", usersRouter)
 
 //Login & Register
 app.use("/views/users", userViewsRouter)

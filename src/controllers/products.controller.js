@@ -40,7 +40,7 @@ export const createProductController = async (req,res) => {
         const newProduct = await createProduct(req.body);
         return res.status(201).json({
             message: "Controller: Producto creado con éxito",
-            product: newProduct,
+            payload: newProduct,
         });
     } catch (error) {
         logger.error("Controller: No se pudo crear: " + error);

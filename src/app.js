@@ -52,7 +52,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 app.use('/apidocs', swaggerUIExpress.serve,swaggerUIExpress.setup(specs))
 
 //Ruta para la base de datos
-const pathDB = process.env.MONGO_URL;
+const pathDB = process.env.MONGO_URL_TEST;
 
 //Configuracion de Express
 app.use(express.json());
@@ -107,7 +107,6 @@ app.get('/realTimeProducts', async (req,res) => {
 
     result.isValid = !(page <= 0 || page > result.totalPages)
 
-    logger.info("Productos renderizados")
     res.render("realTimeProducts", {
       style: 'main.css',
       products: result.docs,
@@ -121,7 +120,6 @@ app.get('/realTimeProducts', async (req,res) => {
 
 app.get('/home', async (req,res) => {
   const carritos = await cartModel.find();
-  logger.info("Carritos renderizados")
   res.render("home", {
     style: "main.css",
     carritos})

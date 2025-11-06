@@ -35,8 +35,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["express-custom", "handlebars", "nodejs", "mongodb", "passport", "session", "bcrypt", "jwt", "email", "dotenv", "singleton", "swagger", "loggers", "testing"],
+  "author": "Guillermo Laviero Correia",
   "license": "ISC",
   "description": "",
   "devDependencies": {

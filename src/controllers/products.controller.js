@@ -38,6 +38,9 @@ export const getProductByIdController = async (req,res) => {
 export const createProductController = async (req,res) => {
     try {
         const newProduct = await createProduct(req.body);
+        if(!title || !description || !code || !price || !stock || !category) {
+            return res.status(400).send({status: "error", message: 'Valores incompletos'})
+        }
         return res.status(201).json({
             message: "Controller: Producto creado con éxito",
             payload: newProduct,

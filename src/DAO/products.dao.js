@@ -14,10 +14,7 @@ export default class ProductsDAO {
     }
 
     async putProduct(pid,updateData) {
-        return await filmsModel.findByIdAndUpdate(
-            pid,
-            updateData,
-            { new: true }
+        return await filmsModel.findByIdAndUpdate(pid,updateData,{ new: true }
         );
     }
 

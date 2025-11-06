@@ -13,3 +13,11 @@ export const getUserByIdService = async (id) => {
 export const createUserService = async (userData) => {
     return await usersModel.createUser(userData)
 }
+
+export const updateUserService = async (id,updateData) => {
+    return await usersModel.putUser(id,updateData)
+}
+
+export const deleteUserWithIdService = async (id) => {
+    return await usersModel.deleteUser(id)
+}

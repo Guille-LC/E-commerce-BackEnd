@@ -1,5 +1,5 @@
 import { logger } from "../config/logger.js"
-import { getAllUsersService, getUserByIdService, createUserService } from "../service/users.service.js";
+import { getAllUsersService, getUserByIdService, createUserService, updateUserService,deleteUserWithIdService } from "../service/users.service.js";
 
 export const getAllUsersController = async (req,res) => {
     try {
@@ -45,5 +45,32 @@ export const createUserController = async (req,res) => {
     } catch (error) {
         logger.error('Controller: No se pude crear el usuario: ' + error);
         return res.status(500).json({ error: "Controller: Error al crear el usuario" });
+    }
+}
+
+export const updateUserController = async (req,res) => {
+    try {
+        let {id} = req.params;
+        let updateData = req.body;
+        if(!id) {
+            return res.status(404).send({status:'error', message: `Controller: No se encontro el usuario con el ID: ${id}`})
+        }
+        const updatedUser = await updateUserService(id,updateData);
+        res.status(200).send({message: "Controller: Usuario actualizado con exito", payload:updatedUser})
+    } catch (error) {
+        logger.error('Controller: No se pudo actualizar el usuario: ' + error)
+    }
+}
+
+export const deleteUserController = async (req,res) => {
+    try {
+        let {id} = req.params;
+        if(!id) {
+            return res.status(404).send({status:"Error", message: `Controller: No se encontro el usuario con el ID: ${id}`})
+        }
+        const deletedUser = await deleteUserWithIdService(id)
+        return res.status(204).json({message:'Controller: Usuario eliminado con exito', payload: deletedUser})
+    } catch (error) {
+        logger.error('Controller: No se pudo eliminar el usuario: ' + error)
     }
 }

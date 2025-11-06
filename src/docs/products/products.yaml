@@ -9,6 +9,7 @@ paths:
           description: Se reciben todos los productos
         '500':
           description: Controller No se pudo obtener los productos.
+
   /api/{pid}:
     get:  
       summary: El producto por ID
@@ -62,6 +63,7 @@ paths:
           description: Controller No se encontro el producto con el ID:${pid}
         '500':
           description: "Controller: Error del servidor al eliminar el producto"
+
   /api/create:
     post:  
       summary: Crear un producto

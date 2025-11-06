@@ -7,7 +7,7 @@ const expect = chai.expect;
 const urlServer = 'http://localhost:8080'
 const requester = supertest(urlServer);
 
-describe('Testing de users.router', () => {
+describe('Testing de APIs', () => {
 
     describe('test de usuarios', () => {
         

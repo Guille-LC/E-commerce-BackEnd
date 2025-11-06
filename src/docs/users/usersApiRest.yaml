@@ -1,0 +1,80 @@
+paths:
+  /api/users/all:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - CRUD usuarios
+      responses:
+        '200':
+          description: Lista de todos los usuarios obtenida correctamente
+        '404':
+          description: No se encontraron usuarios
+        '500':
+          description: No se pudo obtener los usuarios
+
+  /api/users/{id}:
+    get:
+      summary: Obtiene un usuario por su ID
+      tags:
+        - CRUD usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario alojado en la base de datos
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario obtenido correctamente
+        '404':
+          description: No se encontró el usuario
+        '500':
+          description: Error al obtener el usuario
+
+    put:
+      summary: Actualizar un usuario
+      tags:
+        - CRUD usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario alojado en la base de datos
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuario actualizado
+        '404': 
+          description: Usuario no encontrado
+
+    delete:
+      summary: Elimina un usuario
+      tags:
+        - CRUD usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario alojado en la base de datos
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Controller: usuario eliminado con éxito"
+        '404':
+          description: Controller No se encontro el usuario con el ID:${pid}
+        '500':
+          description: "Controller: Error del servidor al eliminar el usuario"
+
+  /api/users/createuser:
+    post: 
+      summary: Crea un usuario
+      tags: 
+        - CRUD usuarios
+      responses: 
+        '201': 
+          description: Usuario creado
+        '500': 
+          description: Error al crear el usuario

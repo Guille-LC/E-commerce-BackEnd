@@ -2,6 +2,7 @@ import * as chai from 'chai'
 import { faker } from '@faker-js/faker'
 import supertest from 'supertest'
 import mongoose from 'mongoose'
+import { logger } from '../src/config/logger.js';
 
 const expect = chai.expect;
 const urlServer = 'http://localhost:8080'
@@ -35,6 +36,36 @@ describe('Testing de APIs', () => {
 
             expect(statusCode).is.eqls(201)
             expect(_body.payload).is.ok.and.is.to.have.property('_id')
+        })
+
+        it('Crear usuario sin nombre', async () => {
+            const fakeUser2 = {
+                age: faker.number.int({ min: 18, max: 80 }),
+                email: faker.internet.email(),
+                role: faker.helpers.arrayElement(["user", "admin"]),
+                pets: [],
+                password: faker.internet.password(),
+                loggedBy: 'Facker Mock Test'
+            };
+
+            const {statusCode} = await requester.post('/api/users/createuser').send(fakeUser2)
+            logger.info(statusCode)
+            expect(statusCode).is.equals(400)
+        })
+
+        it('Crear usuario sin email', async () => {
+            const fakeUser3 = {
+                name: faker.person.firstName(),
+                age: faker.number.int({ min: 18, max: 80 }),
+                role: faker.helpers.arrayElement(["user", "admin"]),
+                pets: [],
+                password: faker.internet.password(),
+                loggedBy: 'Facker Mock Test'
+            }
+
+            const {statusCode} = await requester.post('/api/users/createuser').send(fakeUser3)
+            logger.info(statusCode)
+            expect(statusCode).is.eqls(400)
         })
     })
 })

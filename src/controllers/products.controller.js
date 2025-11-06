@@ -37,10 +37,11 @@ export const getProductByIdController = async (req,res) => {
 //POST
 export const createProductController = async (req,res) => {
     try {
-        const newProduct = await createProduct(req.body);
-        if(!title || !description || !code || !price || !stock || !category) {
+        const {title, description, code, price, status, stock, category} = req.body
+        if(!title || !description || !code || !price || !status || !stock || !category) {
             return res.status(400).send({status: "error", message: 'Valores incompletos'})
         }
+        const newProduct = await createProduct(req.body);
         return res.status(201).json({
             message: "Controller: Producto creado con éxito",
             payload: newProduct,

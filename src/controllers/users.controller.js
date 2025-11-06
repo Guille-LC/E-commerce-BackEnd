@@ -37,6 +37,10 @@ export const getUserByIdController = async (req,res) => {
 
 export const createUserController = async (req,res) => {
     try {
+        const {name,age,email,role} = await req.body;
+        if(!name || !age || !email || !role){
+            return res.status(400).send({message:'Datos incompletos'})
+        }
         const newUser = await createUserService(req.body);
         return res.status(201).json({
             message: 'Usuario creado con exito',

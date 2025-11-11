@@ -33,9 +33,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "npx mocha test/supertest.test.js"
   },
-  "keywords": ["express-custom", "handlebars", "nodejs", "mongodb", "passport", "session", "bcrypt", "jwt", "email", "dotenv", "singleton", "swagger", "loggers", "testing"],
+  "keywords": ["twilio","express-custom", "handlebars", "nodejs", "mongodb", "passport", "session", "bcrypt", "jwt", "email", "dotenv", "singleton", "swagger", "loggers", "testing","winston","sweetalert2"],
   "author": "Guillermo Laviero Correia",
   "license": "ISC",
   "description": "",

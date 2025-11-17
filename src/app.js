@@ -52,10 +52,10 @@ const specs = swaggerJSDoc(swaggerOptions)
 app.use('/apidocs', swaggerUIExpress.serve,swaggerUIExpress.setup(specs))
 
 //Ruta para la base de datos
-/* const pathDB = process.env.MONGO_URL; */
+const pathDB = process.env.MONGO_URL;
 
 //Ruta hacer testing
-const pathDB = process.env.MONGO_URL_TEST; 
+/* const pathDB = process.env.MONGO_URL_TEST;  */
 
 //Configuracion de Express
 app.use(express.json());

@@ -37,13 +37,34 @@
     "dev": "nodemon src/app.js",
     "test": "npx mocha test/supertest.test.js"
   },
-  "keywords": ["twilio","express-custom", "handlebars", "nodejs", "mongodb", "passport", "session", "bcrypt", "jwt", "email", "dotenv", "singleton", "swagger", "loggers", "testing","winston","sweetalert2"],
+  "keywords": [
+    "twilio",
+    "express-custom",
+    "handlebars",
+    "nodejs",
+    "mongodb",
+    "passport",
+    "session",
+    "bcrypt",
+    "jwt",
+    "email",
+    "dotenv",
+    "singleton",
+    "swagger",
+    "loggers",
+    "testing",
+    "winston",
+    "sweetalert2",
+    "typescript"
+  ],
   "author": "Guillermo Laviero Correia",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "chai": "^6.2.0",
     "mocha": "^11.7.4",
-    "swagger-jsdoc": "^6.2.8"
+    "swagger-jsdoc": "^6.2.8",
+    "typescript": "^5.9.3"
   }
 }
